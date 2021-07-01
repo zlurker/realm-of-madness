@@ -1,0 +1,7 @@
+﻿  realm-of-madness.cpp
+  RenderSystem.cpp
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(195,43): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(195,32): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(195,21): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+  Generating Code...
+  realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\Debug\realm-of-madness.exe

@@ -15,6 +15,8 @@ public:
 
 	//void SetUpGL();
 	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
+	int mx, my;
+	
 	int InitGL(GLvoid);
 	bool RenderSetUp();
 	void Render();
@@ -22,13 +24,14 @@ public:
 	void SwapBuffers();
 	void BeginLoop();
 	void SetHandle(HWND handle);
-	int GetPos(int c);
 	void SetPos(int x,int c);
 	int width;
 	int height;
 
-	int* pos;
+	
+
 	std::mutex lock;
+	GLdouble offsetTest;
 
 	HWND wHandle;
 	HDC hdc;

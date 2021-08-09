@@ -1,10 +1,6 @@
 #include "RenderSystem.h"
 
 RenderSystem::RenderSystem(int w, int h) : width(w), height(h) {
-	pos = new int[3];
-	pos[0] = 0;
-	pos[1] = 0;
-	pos[2] = 0;
 }
 
 RenderSystem::~RenderSystem() {
@@ -46,15 +42,13 @@ int RenderSystem::InitGL(GLvoid)                                      // All Set
 	return TRUE;                                        // Initialization Went OK
 }
 
-
-int RenderSystem::GetPos(int c) {
+void RenderSystem::SetPos(int x, int y) {
 	std::lock_guard<std::mutex> lock(lock);
-	return pos[c];
-}
+	mx = x;
+	my = y;
 
-void RenderSystem::SetPos(int x, int c) {
-	std::lock_guard<std::mutex> lock(lock);
-	pos[c] = x;
+
+	offsetTest += 0.001f;
 }
 
 bool RenderSystem::RenderSetUp() {
@@ -192,8 +186,26 @@ void RenderSystem::Draw(GLvoid) {
 	glVertex3f(-1.0f, -1.0f, 1.0f);					// Right of triangle (left)
 	glEnd();		*/									// Done drawing the pyramid
 	glLoadIdentity();									// Reset the current modelview matrix
-	glTranslatef(GetPos(0), GetPos(1), GetPos(2));						// Move right 1.5 units and into the screen 7.0
-	glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis 
+	std::lock_guard<std::mutex> lock(lock);
+	GLint viewport[4]; //var to hold the viewport info
+	GLdouble modelview[16]; //var to hold the modelview info
+	GLdouble projection[16]; //var to hold the projection matrix info
+	GLfloat winX, winY, winZ; //variables to hold screen x,y,z coordinates
+	GLdouble worldX, worldY, worldZ; //variables to hold world x,y,z coordinates
+
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelview); //get the modelview info
+	glGetDoublev(GL_PROJECTION_MATRIX, projection); //get the projection matrix info
+	glGetIntegerv(GL_VIEWPORT, viewport); //get the viewport info
+
+	winX = (float)mx;
+	winY = (float)viewport[3] - (float)my;
+	winZ = 0;
+
+	//get the world coordinates from the screen coordinates
+	gluUnProject(mx, my, 0, modelview, projection, viewport, &worldX, &worldY, &worldZ);
+	glTranslatef(worldX, worldY, -7);						// Move right 1.5 units and into the screen 7.0
+	glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis
+
 	glBegin(GL_QUADS);									// Draw a quad
 	glColor3f(0.0f, 1.0f, 0.0f);						// Set The color to green
 	glVertex3f(1.0f, 1.0f, -1.0f);					// Top Right of the quad (top)

@@ -185,7 +185,9 @@ void RenderSystem::Draw(GLvoid) {
 	glColor3f(0.0f, 1.0f, 0.0f);						// Green
 	glVertex3f(-1.0f, -1.0f, 1.0f);					// Right of triangle (left)
 	glEnd();		*/									// Done drawing the pyramid
-	glLoadIdentity();									// Reset the current modelview matrix
+	glLoadIdentity();	
+	glOrtho(0, width, height, 0, 0, 1);
+	// Reset the current modelview matrix
 	std::lock_guard<std::mutex> lock(lock);
 	GLint viewport[4]; //var to hold the viewport info
 	GLdouble modelview[16]; //var to hold the modelview info
@@ -203,7 +205,7 @@ void RenderSystem::Draw(GLvoid) {
 
 	//get the world coordinates from the screen coordinates
 	gluUnProject(mx, my, 0, modelview, projection, viewport, &worldX, &worldY, &worldZ);
-	glTranslatef(worldX, worldY, -7);						// Move right 1.5 units and into the screen 7.0
+	glTranslatef(worldX, worldY, 0);						// Move right 1.5 units and into the screen 7.0
 	glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis
 
 	glBegin(GL_QUADS);									// Draw a quad

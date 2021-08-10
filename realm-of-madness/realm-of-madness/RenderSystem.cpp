@@ -114,7 +114,7 @@ bool RenderSystem::RenderSetUp() {
 		return FALSE;                               // Return FALSE
 	}
 
-	MessageBox(NULL, L"Success.", L"ERROR", MB_OK | MB_ICONEXCLAMATION);
+	//MessageBox(NULL, L"Success.", L"ERROR", MB_OK | MB_ICONEXCLAMATION);
 
 	//ShowWindow(wHandle, SW_SHOW);                       // Show The Window
 	SetForegroundWindow(wHandle);                      // Slightly Higher Priority
@@ -185,7 +185,7 @@ void RenderSystem::Draw(GLvoid) {
 	glColor3f(0.0f, 1.0f, 0.0f);						// Green
 	glVertex3f(-1.0f, -1.0f, 1.0f);					// Right of triangle (left)
 	glEnd();		*/									// Done drawing the pyramid
-	glLoadIdentity();	
+	glLoadIdentity();
 	glOrtho(0, width, height, 0, 0, 1);
 	// Reset the current modelview matrix
 	std::lock_guard<std::mutex> lock(lock);
@@ -206,40 +206,14 @@ void RenderSystem::Draw(GLvoid) {
 	//get the world coordinates from the screen coordinates
 	gluUnProject(mx, my, 0, modelview, projection, viewport, &worldX, &worldY, &worldZ);
 	glTranslatef(worldX, worldY, 0);						// Move right 1.5 units and into the screen 7.0
-	glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis
+	//glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis
 
-	glBegin(GL_QUADS);									// Draw a quad
-	glColor3f(0.0f, 1.0f, 0.0f);						// Set The color to green
-	glVertex3f(1.0f, 1.0f, -1.0f);					// Top Right of the quad (top)
-	glVertex3f(-1.0f, 1.0f, -1.0f);					// Top Left of the quad (top)
-	glVertex3f(-1.0f, 1.0f, 1.0f);					// Bottom left of the quad (top)
-	glVertex3f(1.0f, 1.0f, 1.0f);					// Bottom right of the quad (top)
-	glColor3f(1.0f, 0.5f, 0.0f);						// Set The color to orange
-	glVertex3f(1.0f, -1.0f, 1.0f);					// Top Right of the quad (bottom)
-	glVertex3f(-1.0f, -1.0f, 1.0f);					// Top Left of the quad (bottom)
-	glVertex3f(-1.0f, -1.0f, -1.0f);					// Bottom left of the quad (bottom)
-	glVertex3f(1.0f, -1.0f, -1.0f);					// Bottom right of the quad (bottom)
-	glColor3f(1.0f, 0.0f, 0.0f);						// Set The color to red
-	glVertex3f(1.0f, 1.0f, 1.0f);					// Top Right of the quad (front)
-	glVertex3f(-1.0f, 1.0f, 1.0f);					// Top Left of the quad (front)
-	glVertex3f(-1.0f, -1.0f, 1.0f);					// Bottom left of the quad (front)
-	glVertex3f(1.0f, -1.0f, 1.0f);					// Bottom right of the quad (front)
-	glColor3f(1.0f, 1.0f, 0.0f);						// Set The color to yellow
-	glVertex3f(1.0f, -1.0f, -1.0f);					// Top Right of the quad (back)
-	glVertex3f(-1.0f, -1.0f, -1.0f);					// Top Left of the quad (back)
-	glVertex3f(-1.0f, 1.0f, -1.0f);					// Bottom left of the quad (back)
-	glVertex3f(1.0f, 1.0f, -1.0f);					// Bottom right of the quad (back)
-	glColor3f(0.0f, 0.0f, 1.0f);						// Set The color to blue
-	glVertex3f(-1.0f, 1.0f, 1.0f);					// Top Right of the quad (left)
-	glVertex3f(-1.0f, 1.0f, -1.0f);					// Top Left of the quad (left)
-	glVertex3f(-1.0f, -1.0f, -1.0f);					// Bottom left of the quad (left)
-	glVertex3f(-1.0f, -1.0f, 1.0f);					// Bottom right of the quad (left)
-	glColor3f(1.0f, 0.0f, 1.0f);						// Set The color to violet
-	glVertex3f(1.0f, 1.0f, -1.0f);					// Top Right of the quad (right)
-	glVertex3f(1.0f, 1.0f, 1.0f);					// Top Left of the quad (right)
-	glVertex3f(1.0f, -1.0f, 1.0f);					// Bottom left of the quad (right)
-	glVertex3f(1.0f, -1.0f, -1.0f);					// Bottom right of the quad (right)
-
+	glColor3f(0.0, 1.0, 0.0);
+	glBegin(GL_POLYGON);
+	glVertex3f(20.0, 40.0, 0.0);
+	glVertex3f(80.0, 40.0, 0.0);
+	glVertex3f(80.0, 60.0, 0.0);
+	glVertex3f(20.0, 60.0, 0.0);
 	glEnd();
 }
 

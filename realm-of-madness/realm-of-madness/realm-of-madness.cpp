@@ -145,7 +145,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		rs.SetHandle(hWnd);
 		rs.BeginLoop();
 	}
-	
+
 	case WM_COMMAND:
 	{
 		int wmId = LOWORD(wParam);
@@ -165,6 +165,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_MOUSEMOVE:
 	{
+		//auto p;
+
 		int xPos = GET_X_LPARAM(lParam);
 		int yPos = GET_Y_LPARAM(lParam);
 		rs.SetPos(xPos, yPos);

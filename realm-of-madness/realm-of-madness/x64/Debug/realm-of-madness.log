@@ -1,4 +1,4 @@
 ﻿  RenderSystem.cpp
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(208,23): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(208,15): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(209,23): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(209,15): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
   realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\x64\Debug\realm-of-madness.exe

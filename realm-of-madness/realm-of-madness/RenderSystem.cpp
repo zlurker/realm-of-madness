@@ -20,8 +20,8 @@ GLvoid RenderSystem::ReSizeGLScene(GLsizei width, GLsizei height)     // Resize 
 	glLoadIdentity();                                   // Reset The Projection Matrix
 
 	// Calculate The Aspect Ratio Of The Window
-	gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
-
+	//gluPerspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1.0f);
+	glOrtho(0, width, height, 0, 0, 1);
 	glMatrixMode(GL_MODELVIEW);                         // Select The Modelview Matrix
 	glLoadIdentity();                                   // Reset The Modelview Matrix
 }
@@ -155,6 +155,7 @@ void RenderSystem::BeginLoop() {
 }
 
 void RenderSystem::Draw(GLvoid) {
+	std::lock_guard<std::mutex> lock(lock);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
 	//glLoadIdentity();                                   // Reset The Current Modelview Matrix
 	/*glTranslatef(-1.5f, 0.0f, -6.0f);						// Move left 1.5 units and into the screen 6.0
@@ -186,9 +187,9 @@ void RenderSystem::Draw(GLvoid) {
 	glVertex3f(-1.0f, -1.0f, 1.0f);					// Right of triangle (left)
 	glEnd();		*/									// Done drawing the pyramid
 	glLoadIdentity();
-	glOrtho(0, width, height, 0, 0, 1);
+	
 	// Reset the current modelview matrix
-	std::lock_guard<std::mutex> lock(lock);
+
 	GLint viewport[4]; //var to hold the viewport info
 	GLdouble modelview[16]; //var to hold the modelview info
 	GLdouble projection[16]; //var to hold the projection matrix info
@@ -204,16 +205,16 @@ void RenderSystem::Draw(GLvoid) {
 	winZ = 0;
 
 	//get the world coordinates from the screen coordinates
-	gluUnProject(mx, my, 0, modelview, projection, viewport, &worldX, &worldY, &worldZ);
+	gluUnProject(winX, winY, 0, modelview, projection, viewport, &worldX, &worldY, &worldZ);
 	glTranslatef(worldX, worldY, 0);						// Move right 1.5 units and into the screen 7.0
 	//glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis
 
 	glColor3f(0.0, 1.0, 0.0);
 	glBegin(GL_POLYGON);
-	glVertex3f(20.0, 40.0, 0.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 40.0, 0.0);
 	glVertex3f(80.0, 40.0, 0.0);
-	glVertex3f(80.0, 60.0, 0.0);
-	glVertex3f(20.0, 60.0, 0.0);
+	glVertex3f(80.0, 0.0, 0.0);
 	glEnd();
 }
 

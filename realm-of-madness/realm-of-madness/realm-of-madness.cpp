@@ -7,7 +7,7 @@
 
 #define MAX_LOADSTRING 100
 
-RenderSystem rs(640, 320);
+RenderSystem rs(640, 480);
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance

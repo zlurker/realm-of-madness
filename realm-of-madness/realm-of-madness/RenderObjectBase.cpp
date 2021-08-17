@@ -1,5 +1,10 @@
 #include "RenderObjectBase.h"
 
+RenderObjectBase::RenderObjectBase() {
+	objectPosition.x = 100;
+	objectPosition.y = 100;
+}
+
 void RenderObjectBase::RenderObject() {
 	glColor3f(0.0, 1.0, 0.0);
 	glBegin(GL_POLYGON);

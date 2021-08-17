@@ -2,6 +2,7 @@
 
 RenderSystem::RenderSystem(int w, int h) : width(w), height(h) {
 	renderObjects.push_back(RenderObjectBase());
+	renderObjects.push_back(RenderObjectBase());
 }
 
 RenderSystem::~RenderSystem() {
@@ -207,10 +208,17 @@ void RenderSystem::Draw(GLvoid) {
 
 	//get the world coordinates from the screen coordinates
 	gluUnProject(winX, winY, 0, modelview, projection, viewport, &worldX, &worldY, &worldZ);
-	glTranslatef(worldX, worldY, 0);						// Move right 1.5 units and into the screen 7.0
+	// Move right 1.5 units and into the screen 7.0
 
-	for (RenderObjectBase render : renderObjects)
+	renderObjects[0].objectPosition.x = worldX;
+	renderObjects[0].objectPosition.y = worldY;
+
+	for (RenderObjectBase render : renderObjects) {
+		glPushMatrix();
+		glTranslatef(render.objectPosition.x, render.objectPosition.y, 0);
 		render.RenderObject();
+		glPopMatrix();
+	}
 	//glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis
 
 

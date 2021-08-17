@@ -142,13 +142,17 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="realm-of-madness.h" />
+    <ClInclude Include="RenderObjectBase.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="realm-of-madness.cpp" />
+    <ClCompile Include="RenderObjectBase.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="realm-of-madness.rc" />

@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 
 RenderSystem::RenderSystem(int w, int h) : width(w), height(h) {
+	renderObjects.push_back(RenderObjectBase());
 }
 
 RenderSystem::~RenderSystem() {
@@ -187,7 +188,7 @@ void RenderSystem::Draw(GLvoid) {
 	glVertex3f(-1.0f, -1.0f, 1.0f);					// Right of triangle (left)
 	glEnd();		*/									// Done drawing the pyramid
 	glLoadIdentity();
-	
+
 	// Reset the current modelview matrix
 
 	GLint viewport[4]; //var to hold the viewport info
@@ -207,15 +208,12 @@ void RenderSystem::Draw(GLvoid) {
 	//get the world coordinates from the screen coordinates
 	gluUnProject(winX, winY, 0, modelview, projection, viewport, &worldX, &worldY, &worldZ);
 	glTranslatef(worldX, worldY, 0);						// Move right 1.5 units and into the screen 7.0
+
+	for (RenderObjectBase render : renderObjects)
+		render.RenderObject();
 	//glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis
 
-	glColor3f(0.0, 1.0, 0.0);
-	glBegin(GL_POLYGON);
-	glVertex3f(0.0, 0.0, 0.0);
-	glVertex3f(0.0, 40.0, 0.0);
-	glVertex3f(80.0, 40.0, 0.0);
-	glVertex3f(80.0, 0.0, 0.0);
-	glEnd();
+
 }
 
 void RenderSystem::SwapBuffers() {

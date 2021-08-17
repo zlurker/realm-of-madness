@@ -6,6 +6,8 @@
 #include <gl\glu.h> 
 #include <thread>
 #include <mutex>
+#include <vector>
+#include "RenderObjectBase.h"
 //#include "Procedure.h"
 
 class RenderSystem {
@@ -16,7 +18,9 @@ public:
 	//void SetUpGL();
 	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
 	int mx, my;
-	
+
+	std::vector<RenderObjectBase> renderObjects;
+
 	int InitGL(GLvoid);
 	bool RenderSetUp();
 	void Render();
@@ -24,11 +28,11 @@ public:
 	void SwapBuffers();
 	void BeginLoop();
 	void SetHandle(HWND handle);
-	void SetPos(int x,int c);
+	void SetPos(int x, int c);
 	int width;
 	int height;
 
-	
+
 
 	std::mutex lock;
 	GLdouble offsetTest;

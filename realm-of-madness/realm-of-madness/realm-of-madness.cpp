@@ -20,6 +20,8 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+bool drag;
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -166,10 +168,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 	{
 		//auto p;
+		if (!drag)
+			break;
 
 		int xPos = GET_X_LPARAM(lParam);
 		int yPos = GET_Y_LPARAM(lParam);
 		rs.SetPos(xPos, yPos);
+	}
+	break;
+	case WM_LBUTTONDOWN:
+	{
+		drag = true;
+	}
+	break;
+	case WM_LBUTTONUP:
+	{
+		drag = false;
 	}
 	break;
 	case WM_PAINT:

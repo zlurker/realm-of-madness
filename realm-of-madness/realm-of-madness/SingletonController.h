@@ -14,7 +14,7 @@ public:
 	std::vector<ISingleton*> singletons;
 };
 
-static SingletonController* singletonControllerInstance = new SingletonController();
+static SingletonController* singletonControllerInstance; //= new SingletonController();
 
 #define SINGLETON(T) \
 static T* instance = new T(); \

@@ -1,6 +1,8 @@
 #include "SingletonController.h"
 
 ISingleton::ISingleton() {
-	if (singletonControllerInstance->singletons.empty())
-		singletonControllerInstance->singletons.push_back(new ISingleton());
+	if (singletonControllerInstance == nullptr)
+		singletonControllerInstance = new SingletonController();
+
+	singletonControllerInstance->singletons.push_back(this);
 }

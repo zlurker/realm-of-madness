@@ -8,6 +8,7 @@
 #include <mutex>
 #include <vector>
 #include "RenderObjectBase.h"
+#include "Input.h"
 //#include "Procedure.h"
 
 class RenderSystem {

@@ -1,6 +1,2 @@
-﻿  realm-of-madness.cpp
-  Window.cpp
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\Window.h(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\Window.h(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Generating Code...
+﻿  ISingleton.cpp
   realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\x64\Debug\realm-of-madness.exe

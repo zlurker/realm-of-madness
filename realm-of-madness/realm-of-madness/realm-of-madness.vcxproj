@@ -143,19 +143,24 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="IClickable.h" />
     <ClInclude Include="IDraggable.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="realm-of-madness.h" />
     <ClInclude Include="RenderObjectBase.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SingletonController.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="ISingleton.cpp" />
     <ClCompile Include="realm-of-madness.cpp" />
     <ClCompile Include="RenderObjectBase.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="SingletonController.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Window.cpp" />

@@ -11,10 +11,14 @@ class SingletonController
 {
 public:
 	SingletonController();
+	static SingletonController* GetInstance();
+
+	void AddSingletonToController(ISingleton* singleton);
+
+private:
+	static SingletonController* instance;
 	std::vector<ISingleton*> singletons;
 };
-
-static SingletonController* singletonControllerInstance; //= new SingletonController();
 
 #define SINGLETON(T) \
 static T* instance = new T(); \

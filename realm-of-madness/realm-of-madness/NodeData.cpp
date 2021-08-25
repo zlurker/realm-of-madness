@@ -1,7 +1,7 @@
 #pragma once
 #include "NodeReflectionManager.h"
 
-NodeData::VariableData::VariableData(const char* n) {
+VariableData::VariableData(const char* n) {
 	name = n;
 }
 

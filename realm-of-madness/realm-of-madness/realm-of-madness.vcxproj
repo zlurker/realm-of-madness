@@ -144,6 +144,8 @@
     <ClInclude Include="IClickable.h" />
     <ClInclude Include="IDraggable.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="NodeClassTest.h" />
+    <ClInclude Include="NodeReflectionManager.h" />
     <ClInclude Include="realm-of-madness.h" />
     <ClInclude Include="RenderObjectBase.h" />
     <ClInclude Include="RenderSystem.h" />
@@ -157,6 +159,9 @@
   <ItemGroup>
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="ISingleton.cpp" />
+    <ClCompile Include="NodeClassTest.cpp" />
+    <ClCompile Include="NodeData.cpp" />
+    <ClCompile Include="NodeReflectionManager.cpp" />
     <ClCompile Include="realm-of-madness.cpp" />
     <ClCompile Include="RenderObjectBase.cpp" />
     <ClCompile Include="RenderSystem.cpp" />

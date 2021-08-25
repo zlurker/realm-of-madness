@@ -2,14 +2,13 @@
 #include <vector>
 #include <map>
 
+class VariableData {
+public:
+	VariableData(const char* n);
+	const char* name;
+};
+
 class NodeData {
-
-	class VariableData {
-	public:
-		VariableData(const char* n);
-		const char* name;
-	};
-
 public:
 	NodeData(char* identifier, void (*reflectionDataMethod)(NodeData*));
 	std::vector<VariableData*> variables;
@@ -28,15 +27,17 @@ private:
 };
 
 #define REFLECTION_START(IDENTIFIER, T) \
-static NodeData* nodeData = new NodeData(IDENTIFIER); \
 void BuildReflectionData(NodeData* instance){ \
-	instance->variables = {
+	T creationInstance; \
+	instance->variables = { \
 
 #define REFLECT_VARIABLE(VARIABLE) \
-	new NodeData::VariableData(#VARIABLE),
+	new VariableData(#VARIABLE), \
 
 #define REFLECTION_END() \
 	}; \
 } \
+static NodeData* nodeData = new NodeData(IDENTIFIER,BuildReflectionData); \
+
 
 

@@ -10,7 +10,7 @@ public:
 
 class NodeData {
 public:
-	NodeData(char* identifier, void (*reflectionDataMethod)(NodeData*));
+	NodeData(const char* identifier, void (*reflectionDataMethod)(NodeData*));
 	std::vector<VariableData*> variables;
 };
 
@@ -27,17 +27,15 @@ private:
 };
 
 #define REFLECTION_START(IDENTIFIER, T) \
-void BuildReflectionData(NodeData* instance){ \
-	T creationInstance; \
-	instance->variables = { \
+	static const char* identifier = IDENTIFIER;\
+	void BuildReflectionData(NodeData* instance){ \
+		T creationInstance; \
+		instance->variables = {
 
 #define REFLECT_VARIABLE(VARIABLE) \
-	new VariableData(#VARIABLE), \
+		new VariableData(#VARIABLE), 
 
 #define REFLECTION_END() \
-	}; \
-} \
-static NodeData* nodeData = new NodeData(IDENTIFIER,BuildReflectionData); \
-
-
-
+		}; \
+	} \
+	static NodeData* nodeData = new NodeData(identifier,BuildReflectionData);

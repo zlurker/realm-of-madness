@@ -1,8 +1,6 @@
 ﻿  NodeClassTest.cpp
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\NodeClassTest.h(13,49): error C2059: syntax error: ';'
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\NodeClassTest.h(14,41): error C2059: syntax error: ';'
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\NodeClassTest.h(15,1): error C2059: syntax error: '}'
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\NodeClassTest.h(15,1): error C2143: syntax error: missing ';' before '}'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\NodeClassTest.h(13,1): warning C4101: 'creationInstance': unreferenced local variable
   NodeData.cpp
   NodeReflectionManager.cpp
   Generating Code...
+  realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\x64\Debug\realm-of-madness.exe

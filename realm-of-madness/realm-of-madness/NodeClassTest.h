@@ -10,8 +10,6 @@ public:
 };
 
 
-REFLECTION_START("NodeClassTest", NodeClassTest);
-REFLECT_VARIABLE(creationInstance.test1);
-};
-}
-static NodeData* nodeData = new NodeData("Test", BuildReflectionData);
+REFLECTION_START("NodeClassTest", NodeClassTest)
+REFLECT_VARIABLE(creationInstance.test1)
+REFLECTION_END()

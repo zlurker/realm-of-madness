@@ -1,5 +1,7 @@
 #include "NodeReflectionManager.h"
 
+NodeReflectionManager* NodeReflectionManager::instance;
+
 NodeReflectionManager::NodeReflectionManager() {
 
 }

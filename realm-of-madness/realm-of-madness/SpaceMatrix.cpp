@@ -32,8 +32,20 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 coordinates) {
 			rangeEnd = axisLths[i];
 		}
 
+		// continue logic for this
 		int insertPos = BinarySearch(rangeStart, rangeEnd, newCoords[i], axises[i]);
 	}
+}
+
+int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
+	int min[2];
+	int max[2];
+
+	// Wait for array accesor
+	if (startRange.x > endRange.x) {
+
+	}
+
 }
 
 int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, std::vector<int>* targetAxis) {
@@ -52,6 +64,7 @@ int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, std::ve
 }
 
 int SpaceMatrix::DetermineBinaryRange(int centerPoint, float value) {
+	// Wait for array accesor
 	if (matrixElements[centerPoint]. > value)
 		return -1;
 

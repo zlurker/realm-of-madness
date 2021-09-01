@@ -85,10 +85,25 @@ int SpaceMatrix::ReturnAxisElement(int axis, int elementId) {
 }
 
 void SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
+	std::vector<int>* selectedAxis = ReturnAxis(axis);
 
+	std::rotate()
 }
 
 void SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {
-
+	std::vector<int>* selectedAxis = ReturnAxis(axis);
+	selectedAxis->insert(selectedAxis->begin() + pos, value);
 }
 
+std::vector<int>* SpaceMatrix::ReturnAxis(int axis) {
+	switch (axis) {
+	case 0: {
+		return xAxis;
+	}break;
+	case 1: {
+		return yAxis;
+	}break;
+	}
+
+	return nullptr;
+}

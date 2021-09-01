@@ -21,5 +21,6 @@ private:
 	int ReturnAxisElement(int, int);
 	void MoveAxisElement(int, int, int);
 	void InsertAxisElement(int, int, int);
+	std::vector<int>* ReturnAxis(int);
 };
 

@@ -20,24 +20,24 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 
 	for (int i = 0; i < 2; i++) {
 		int rangeStart, rangeEnd;
-		int* axisPos = matrixEle->GetAxisPosition(i);
+		rangeStart = 0;
+		rangeEnd = axisLths[i];
 
-		if (currCoords[i] > newCoords[i]) {
-			rangeStart = 0;
-			rangeEnd = *axisPos;
-		}
-		else {
-			rangeStart = *axisPos;
-			rangeEnd = axisLths[i];
-		}
+		int* axisPos = matrixEle->GetAxisPosition(i);
+		bool newElement = *axisPos == -1;
+
+		if (!newElement)
+			if (currCoords[i] > newCoords[i])
+				rangeEnd = *axisPos;
+			else
+				rangeStart = *axisPos;
 
 		int insertPos = BinarySearch(rangeStart, rangeEnd, newCoords[i], i);
-		// need to set the axis positions here
-		
 
-		if (axisPos[i] > -1) {
-
-		}
+		if (!newElement)
+			MoveAxisElement(i, *axisPos, insertPos);
+		else
+			InsertAxisElement(i, insertPos, elementId);
 
 		*axisPos = insertPos;
 	}

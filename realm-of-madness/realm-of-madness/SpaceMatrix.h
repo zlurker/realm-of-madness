@@ -11,13 +11,15 @@ public:
 	std::vector<MatrixElement> matrixElements;
 
 	SpaceMatrix();
-	int CreateNewMatrixElement();
-	void SetMatrixElementLocation(int elementId, Vector2 coordinates);
-	int* GetElementsInRange(Vector2 startRange, Vector2 endRange);
+	int CreateNewMatrixElement(Vector2);
+	void SetMatrixElementLocation(int, Vector2);
+	int* GetElementsInRange(Vector2, Vector2);
 
 private:
-	int BinarySearch(int rangeStart, int rangeEnd, float value,int axis);
-	int DetermineBinaryRange(int centerPoint, float value,int axis);
-	int ReturnAxisElement(int axis, int elementId);
+	int BinarySearch(int, int, float, int);
+	int DetermineBinaryRange(int, float, int);
+	int ReturnAxisElement(int, int);
+	void MoveAxisElement(int, int, int);
+	void InsertAxisElement(int, int, int);
 };
 

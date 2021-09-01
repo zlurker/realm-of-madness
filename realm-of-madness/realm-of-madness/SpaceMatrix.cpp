@@ -5,33 +5,41 @@ SpaceMatrix::SpaceMatrix() {
 	yAxis = new std::vector<int>();
 }
 
-int SpaceMatrix::CreateNewMatrixElement()
+int SpaceMatrix::CreateNewMatrixElement(Vector2 coord)
 {
 	int id = matrixElements.size();
 	matrixElements.push_back(MatrixElement());
+	SetMatrixElementLocation(id, coord);
 	return id;
 }
 
 void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
-	MatrixElement matrixEle = matrixElements[elementId];
-	Vector2 currCoords = matrixEle.coordinates;
-	int axisPos[2] = { matrixEle.xAxisPos,matrixEle.yAxisPos };
+	MatrixElement* matrixEle = &(matrixElements[elementId]);
+	Vector2 currCoords = matrixEle->coordinates;
 	int axisLths[2] = { xAxis->size(),yAxis->size() };
 
 	for (int i = 0; i < 2; i++) {
 		int rangeStart, rangeEnd;
+		int* axisPos = matrixEle->GetAxisPosition(i);
 
 		if (currCoords[i] > newCoords[i]) {
 			rangeStart = 0;
-			rangeEnd = axisPos[i];
+			rangeEnd = *axisPos;
 		}
 		else {
-			rangeStart = axisPos[i];
+			rangeStart = *axisPos;
 			rangeEnd = axisLths[i];
 		}
 
-		// continue logic for this
 		int insertPos = BinarySearch(rangeStart, rangeEnd, newCoords[i], i);
+		// need to set the axis positions here
+		
+
+		if (axisPos[i] > -1) {
+
+		}
+
+		*axisPos = insertPos;
 	}
 }
 
@@ -74,5 +82,13 @@ int SpaceMatrix::ReturnAxisElement(int axis, int elementId) {
 		return (*xAxis)[elementId];
 
 	return (*yAxis)[elementId];
+}
+
+void SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
+
+}
+
+void SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {
+
 }
 

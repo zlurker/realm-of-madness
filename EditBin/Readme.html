@@ -1,0 +1,260 @@
+<HTML>
+<HEAD>
+<BASE HREF="http://www.halcyon.com/ast/dload/guicon.htm">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Adding Console I/O to a Win32 GUI App</TITLE>
+</HEAD>
+<BODY>
+<DIR>
+
+<B><FONT FACE="Arial" SIZE=5><P>Adding Console I/O to a Win32 GUI App</P>
+<P>Windows Developer Journal, December 1997</P>
+
+</B></FONT><FONT FACE="Arial"><P>&nbsp;</P>
+<P>One of the common misconceptions surrounding Win32 programming is that you must decide early in the design process whether your application will be a console or GUI application. In reality, console applications can create windows and have a message loop just like a GUI application (see &quot;Adding Graphics to Console Applications&quot; by Michael Covington, </FONT><FONT FACE="I Times Italic">Visual Developer</FONT><FONT FACE="Arial">, June/July 1997). Alternatively, graphical applications can create and use a console. Although Win32 provides functions for communicating with a console, they are a little clumsy to use and require parameters that are unnecessary for simple text I/O. This article shows how to use standard C/C++ I/O with consoles, and how to work around specific problems in the Visual C++ I/O library.</P>
+</FONT><FONT FACE="Bookman Old Style" SIZE=2>
+</FONT><B><FONT FACE="Arial" SIZE=4><P>Win32 Handles versus RTL Handles</P>
+</B></FONT><FONT FACE="Arial"><P>The standard C I/O package operates on top of whatever I/O services the local operating system provides. Your C program then manipulates handles of type </FONT><FONT FACE="B Letter Gothic Bold">FILE*</FONT><FONT FACE="Arial">, no matter what the actual details of the physical file I/O are. The file I/O package that Win32 provides uses handles of type </FONT><FONT FACE="B Letter Gothic Bold">HANDLE</FONT><FONT FACE="Arial">, so Win32 C implementations of the standard I/O functions must internally associate a </FONT><FONT FACE="B Letter Gothic Bold">HANDLE</FONT><FONT FACE="Arial"> with each </FONT><FONT FACE="B Letter Gothic Bold">FILE*</FONT><FONT FACE="Arial">, and eventually call the Win32 API to perform the I/O.</P>
+
+<P>C predefines the meaning of three handles: </FONT><FONT FACE="B Letter Gothic Bold">stdin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">stderr</FONT><FONT FACE="Arial">. These names refer to </FONT><FONT FACE="B Letter Gothic Bold">FILE*</FONT><FONT FACE="Arial"> handles that refer to standard input, output, and error output. Win32 provides a similar concept; it provides a function called </FONT><FONT FACE="B Letter Gothic Bold">GetStdHandle()</FONT><FONT FACE="Arial">, and you can pass that function one of three constants (</FONT><FONT FACE="B Letter Gothic Bold">STD_INPUT_HANDLE</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">STD_OUTPUT_HANDLE</FONT><FONT FACE="Arial">, or </FONT><FONT FACE="B Letter Gothic Bold">STD_ERROR_HANDLE</FONT><FONT FACE="Arial">) to obtain the </FONT><FONT FACE="B Letter Gothic Bold">HANDLE</FONT><FONT FACE="Arial"> associated with standard input, standard output, or the standard error output. Exactly what these handles refer to depends on how your Win32 program was built and marked. These handles could be redirected to files, or they could be associated with a console window. If you launch a program from a DOS box (which is basically a console window), it may end up using that DOS box as its console window by default (that is, writing to standard output produces output in the DOS box window).</P>
+
+<P>Win32 GUI applications do not, by default, have an associated console window. However, it is possible for your GUI application to explicitly create a console window and then manually associate standard C I/O handles (</FONT><FONT FACE="B Letter Gothic Bold">FILE*</FONT><FONT FACE="Arial">) with the appropriate Win32 handles (</FONT><FONT FACE="B Letter Gothic Bold">HANDLE</FONT><FONT FACE="Arial">) so that ordinary C runtime functions can operate on the console. To associate a C file handle with a Win32 file handle, the Visual C++ runtime library provides </FONT><FONT FACE="B Letter Gothic Bold">_open_osfhandle()</FONT><FONT FACE="Arial">. Given a valid Win32 handle, this function returns an RTL handle that internally operates on the given Win32 handle. This lets you transform the three console handles into compatible C file handles that you can use to redirect </FONT><FONT FACE="B Letter Gothic Bold">stdin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">stderr</FONT><FONT FACE="Arial"> to the console.</P>
+
+</FONT><B><FONT FACE="Arial" SIZE=4><P>C++ I/O</P>
+
+</B></FONT><FONT FACE="Arial"><P>Once </FONT><FONT FACE="B Letter Gothic Bold">stdin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">stderr</FONT><FONT FACE="Arial"> are redirected, standard C functions such as </FONT><FONT FACE="B Letter Gothic Bold">printf()</FONT><FONT FACE="Arial"> and </FONT><FONT FACE="B Letter Gothic Bold">gets()</FONT><FONT FACE="Arial"> can be used, without change, to communicate with the Win32 console. But what about C++ I/O streams? Since </FONT><FONT FACE="B Letter Gothic Bold">cin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">cout</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">cerr</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">clog</FONT><FONT FACE="Arial"> are closely tied to C’s </FONT><FONT FACE="B Letter Gothic Bold">stdin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">stderr</FONT><FONT FACE="Arial">, you would expect them to behave similarly. This is half right.</P>
+
+<P>C++ I/O streams actually come in two flavors: template and non- template. The older non-template version of I/O streams is slowly being replaced by a newer template style of streams first defined by the Standard Template Library (STL) and which are now being absorbed into the ANSI C++ standard. Visual C++ v5 provides both types and allows you to choose between the two by including different header files. STL I/O streams work as you would expect, automatically using any newly redirected </FONT><FONT FACE="B Letter Gothic Bold">stdio</FONT><FONT FACE="Arial"> handles. Non-template I/O streams, however, do not work as expected. To discover why, I looked at the source code, conveniently provided on the Visual C++ CD-ROM.</P>
+<P>The problem is that the older I/O streams were designed to use UNIX-style &quot;file descriptors,&quot; where integers are used instead of handles (0 for </FONT><FONT FACE="B Letter Gothic Bold">stdin</FONT><FONT FACE="Arial">, 1 for </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, and so on). That’s convenient for UNIX implementations, but Win32 C compilers have to provide yet another I/O layer to represent that style of I/O, since Win32 does not provide a compatible set of functions. In any case, when you call </FONT><FONT FACE="B Letter Gothic Bold">_open_osfhandle()</FONT><FONT FACE="Arial"> to associate a new Win32 handle with (for example) </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, it has no effect on the other layer of I/O code. Hence, file descriptor 1 will continue using the same underlying Win32 handle as before, and sending output to </FONT><FONT FACE="B Letter Gothic Bold">cout</FONT><FONT FACE="Arial"> will not produce the desired effect.</P>
+
+<P>Fortunately, the designers of the original I/O stream package foresaw this problem and provided a clean and useful solution. The base class </FONT><FONT FACE="B Letter Gothic Bold">ios</FONT><FONT FACE="Arial"> provides a static function, </FONT><FONT FACE="B Letter Gothic Bold">sync_with_stdio()</FONT><FONT FACE="Arial">, that causes the library to change its underlying file descriptors to reflect any changes in the standard I/O layer. Though this is not strictly necessary for STL I/O streams, it does no harm and lets me write code that works correctly with either the new or old form of I/O streams.</P>
+</FONT><B><FONT FACE="Arial" SIZE=4>
+<P>A Redirect Function</P>
+</B></FONT><FONT FACE="B Letter Gothic Bold"><P>guicon.cpp</FONT><FONT FACE="Arial"> (<B><U>Listing 1</B></U>) and </FONT><FONT FACE="B Letter Gothic Bold">guicon.h</FONT><FONT FACE="Arial"> (<B><U>Listing 2</B></U>) provide code for redirecting C and C++ I/O to a Win32 console. </FONT><FONT FACE="B Letter Gothic Bold">RedirectIOToConsole()</FONT><FONT FACE="Arial"> does all the work, creating a console and increasing the number of lines buffered with calls to </FONT><FONT FACE="B Letter Gothic Bold">AllocConsole()</FONT><FONT FACE="Arial"> and </FONT><FONT FACE="B Letter Gothic Bold">SetConsoleScreenBufferSize()</FONT><FONT FACE="Arial"> respectively. Each process is allowed only one console, so calling </FONT><FONT FACE="B Letter Gothic Bold">AllocConsole()</FONT><FONT FACE="Arial"> multiple times will not produce multiple consoles. Increasing the screen buffer size allows you to scroll back and look at a history of up to </FONT><FONT FACE="B Letter Gothic Bold">MAX_CONSOLE_LINES</FONT><FONT FACE="Arial"> of text. The code then creates a new </FONT><FONT FACE="B Letter Gothic Bold">FILE*</FONT><FONT FACE="Arial"> handle for </FONT><FONT FACE="B Letter Gothic Bold">STD_INPUT_HANDLE</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">STD_OUTPUT_HANDLE</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">STD_ERROR_HANDLE</FONT><FONT FACE="Arial">, and the existing </FONT><FONT FACE="B Letter Gothic Bold">stdin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">stderr</FONT><FONT FACE="Arial"> are replaced. </FONT><FONT FACE="B Letter Gothic Bold">setvbuf()</FONT><FONT FACE="Arial"> is then called to turn off input and output buffering, effectively flushing the data with each read and write. Last, but not least, a call to </FONT><FONT FACE="B Letter Gothic Bold">ios::sync_with_stdio()</FONT><FONT FACE="Arial"> ensures that </FONT><FONT FACE="B Letter Gothic Bold">cin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">cout</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">cerr</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">clog</FONT><FONT FACE="Arial"> are associated with the new </FONT><FONT FACE="B Letter Gothic Bold">stdin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">stdout</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">stderr</FONT><FONT FACE="Arial">. The code is wrapped in preprocessor conditionals to allow it to be easily compiled out for release applications.</P>
+
+<P>The code in </FONT><FONT FACE="B Letter Gothic Bold">test.cpp</FONT><FONT FACE="Arial"> (<B><U>Listing 3</B></U>) is a sample of using </FONT><FONT FACE="B Letter Gothic Bold">RedirectIOToConsole()</FONT><FONT FACE="Arial">. It outputs text using the C </FONT><FONT FACE="B Letter Gothic Bold">stdio</FONT><FONT FACE="Arial"> and C++ I/O streams and uses a simple integer to test input. Additionally, if you are using STL streams it tests the wide character versions of </FONT><FONT FACE="B Letter Gothic Bold">cin</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">cout</FONT><FONT FACE="Arial">, </FONT><FONT FACE="B Letter Gothic Bold">cerr</FONT><FONT FACE="Arial">, and </FONT><FONT FACE="B Letter Gothic Bold">clog</FONT><FONT FACE="Arial">. The rest of the code demonstrates how the Visual C++ C runtime debug functions can be used to output useful debugging information to the console. Since Win32 destroys the console when the application exits, I pause for two seconds before exiting so that you can see the last few pieces of output.</P>
+
+<P>Overall, having a console associated with a Win32 GUI application is a very useful tool. Though similar debug text output can be achieved using Win32’s </FONT><FONT FACE="B Letter Gothic Bold">OutputDebugString()</FONT><FONT FACE="Arial"> and DBWin32 (see &quot;A DBWin32 Debugger for Windows&quot; by Andrew Tucker, </FONT><FONT FACE="I Times Italic">C/C++ Users Journal</FONT><FONT FACE="Arial">, October 1996), this console technique is much more portable between the Win32 API flavors (namely Windows 95 and NT) and it provides a method of input as well as output. Another application might be to use the console as a simple debugger that allows you to print out crucial data structures and inspect and change variables without the use of a full-blown interactive debugger. Finally, for those applications whose user interface makes sense as both a console app and a GUI, a command-line switch could allow the user to choose which is appropriate for their situation — something that is not as readily available when using a GUI from a console application.</P>
+
+</FONT><B><FONT FACE="Arial" SIZE=4><P>References</P>
+</B></FONT><FONT FACE="Arial"><P>Covington, Michael. &quot;Adding Graphics to Console Applications,&quot; </FONT><FONT FACE="I Times Italic">Visual Developer</FONT><FONT FACE="Arial">, June/July 1997.</P>
+
+<P>Tucker, Andrew. &quot;A DBWin32 Debugger for Windows,&quot; </FONT><FONT FACE="I Times Italic">C/C++ Users Journal</FONT><FONT FACE="Arial">, October 1996.</P>
+
+</FONT><FONT FACE="BI Helvetica BoldOblique"><P>Andrew Tucker</FONT><FONT FACE="Arial"> (ast@halcyon.com) is a software engineer in Seatte, WA. His programming interests include compilers, debuggers, and other areas of systems programming.</P>
+
+</FONT><FONT FACE=" "><P>&nbsp;</P>
+</FONT><B><FONT FACE="Arial" SIZE=5><P>Listing 1: guicon.cpp -- A console redirection function</P>
+</B></FONT><FONT FACE="Bookman Old Style" SIZE=2>
+<P>&nbsp;</P>
+
+</FONT><FONT FACE="Courier New" SIZE=2><P>#include &lt;windows.h&gt;</P>
+<P>#include &lt;stdio.h&gt;</P>
+<P>#include &lt;fcntl.h&gt;</P>
+<P>#include &lt;io.h&gt;</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#include &lt;iostream&gt;</P>
+<P>#include &lt;fstream&gt;</P>
+
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#ifndef _USE_OLD_IOSTREAMS</P>
+<P>using namespace std;</P>
+<P>#endif</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>// maximum mumber of lines the output console should have</P>
+<P>static const WORD MAX_CONSOLE_LINES = 500;</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#ifdef _DEBUG</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>void RedirectIOToConsole()</P>
+
+<P>{</P>
+<P>    int                        hConHandle;</P>
+<P>    long                       lStdHandle;</P>
+<P>    CONSOLE_SCREEN_BUFFER_INFO coninfo;</P>
+<P>    FILE                       *fp;</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    // allocate a console for this app</P>
+
+<P>    AllocConsole();</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    // set the screen buffer to be big enough to let us scroll text</P>
+<P>    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), </P>
+<P>                               &amp;coninfo);</P>
+<P>    coninfo.dwSize.Y = MAX_CONSOLE_LINES;</P>
+<P>    SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), </P>
+
+<P>                               coninfo.dwSize);</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    // redirect unbuffered STDOUT to the console</P>
+<P>    lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);</P>
+<P>    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);</P>
+<P>    fp = _fdopen( hConHandle, "w" );</P>
+<P>    *stdout = *fp;</P>
+
+<P>    setvbuf( stdout, NULL, _IONBF, 0 );</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    // redirect unbuffered STDIN to the console</P>
+<P>    lStdHandle = (long)GetStdHandle(STD_INPUT_HANDLE);</P>
+<P>    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);</P>
+<P>    fp = _fdopen( hConHandle, "r" );</P>
+<P>    *stdin = *fp;</P>
+
+<P>    setvbuf( stdin, NULL, _IONBF, 0 );</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    // redirect unbuffered STDERR to the console</P>
+<P>    lStdHandle = (long)GetStdHandle(STD_ERROR_HANDLE);</P>
+<P>    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);</P>
+<P>    fp = _fdopen( hConHandle, "w" );</P>
+<P>    *stderr = *fp;</P>
+
+<P>    setvbuf( stderr, NULL, _IONBF, 0 );</P>
+<P>    </P>
+<P>    // make cout, wcout, cin, wcin, wcerr, cerr, wclog and clog </P>
+<P>    // point to console as well</P>
+<P>    ios::sync_with_stdio();</P>
+<P>}</P>
+</FONT><FONT FACE="Bookman Old Style">
+
+</FONT><FONT FACE="Courier New" SIZE=2><P>#endif</P>
+<P>//End of File</P>
+</FONT><FONT FACE="Bookman Old Style" SIZE=2><P>&nbsp;</P>
+</FONT><B><FONT FACE="Arial" SIZE=5><P>&nbsp;</P>
+<P>Listing 2: guicon.h -- Interface to console redirection function</P>
+</B></FONT><FONT FACE="Bookman Old Style" SIZE=2>
+</FONT><FONT FACE="Courier New" SIZE=2><P>#ifndef __GUICON_H__</P>
+<P>#define __GUICON_H__</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#ifdef _DEBUG</P>
+<P>void RedirectIOToConsole();</P>
+
+<P>#endif</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#endif</P>
+<P>/* End of File */</P>
+</FONT><FONT FACE="Bookman Old Style" SIZE=2>
+<P>&nbsp;</P>
+</FONT><B><FONT FACE="Arial" SIZE=5><P>Listing 3: test.cpp -- Demonstrating console redirection</P>
+
+</B></FONT><FONT FACE="Courier New" SIZE=2><P>#include &lt;windows.h&gt;</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#include &lt;iostream&gt;</P>
+
+<P>#include &lt;fstream&gt;</P>
+<P>#include &lt;conio.h&gt;</P>
+<P>#include &lt;stdio.h&gt;</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#ifndef _USE_OLD_OSTREAMS</P>
+<P>using namespace std;</P>
+<P>#endif</P>
+</FONT><FONT FACE="Bookman Old Style">
+
+</FONT><FONT FACE="Courier New" SIZE=2><P>#include "guicon.h"</P>
+</FONT><FONT FACE="Bookman Old Style">
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</FONT><FONT FACE="Courier New" SIZE=2><P>#include &lt;crtdbg.h&gt;</P>
+</FONT><FONT FACE="Bookman Old Style">
+<P>&nbsp;</P>
+</FONT><FONT FACE="Courier New" SIZE=2><P>int APIENTRY WinMain(HINSTANCE hInstance,</P>
+<P>                     HINSTANCE hPrevInstance,</P>
+<P>                     LPTSTR     lpCmdLine,</P>
+
+<P>                     int       nCmdShow)</P>
+<P>{</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#ifdef _DEBUG</P>
+<P>    RedirectIOToConsole();      </P>
+<P>#endif</P>
+<P>    int iVar;</P>
+</FONT><FONT FACE="Bookman Old Style">
+
+</FONT><FONT FACE="Courier New" SIZE=2><P>    // test stdio</P>
+<P>    fprintf(stdout, "Test output to stdout\n");</P>
+<P>    fprintf(stderr, "Test output to stderr\n");</P>
+<P>    fprintf(stdout, "Enter an integer to test stdin: ");</P>
+<P>    scanf("%d", &amp;iVar);</P>
+<P>    printf("You entered %d\n", iVar);</P>
+
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    //test iostreams</P>
+<P>    cout &lt;&lt; "Test output to cout" &lt;&lt; endl;</P>
+<P>    cerr &lt;&lt; "Test output to cerr" &lt;&lt; endl;</P>
+
+<P>    clog &lt;&lt; "Test output to clog" &lt;&lt; endl;</P>
+<P>    cout &lt;&lt; "Enter an integer to test cin: ";</P>
+<P>    cin &gt;&gt; iVar;</P>
+
+<P>    cout &lt;&lt; "You entered " &lt;&lt; iVar &lt;&lt; endl;</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>#ifndef _USE_OLD_IOSTREAMS</P>
+<P>    // test wide iostreams</P>
+<P>    wcout &lt;&lt; L"Test output to wcout" &lt;&lt; endl;</P>
+
+<P>    wcerr &lt;&lt; L"Test output to wcerr" &lt;&lt; endl;</P>
+<P>    wclog &lt;&lt; L"Test output to wclog" &lt;&lt; endl;</P>
+<P>    wcout &lt;&lt; L"Enter an integer to test wcin: ";</P>
+
+<P>    wcin &gt;&gt; iVar;</P>
+<P>    wcout &lt;&lt; L"You entered " &lt;&lt; iVar &lt;&lt; endl;</P>
+<P>#endif</P>
+</FONT><FONT FACE="Bookman Old Style">
+
+<P>&nbsp;</P>
+</FONT><FONT FACE="Courier New" SIZE=2><P>    // test CrtDbg output</P>
+<P>    _CrtSetReportMode( _CRT_ASSERT, _CRTDBG_MODE_FILE );</P>
+<P>    _CrtSetReportFile( _CRT_ASSERT, _CRTDBG_FILE_STDERR );</P>
+<P>    _CrtSetReportMode( _CRT_ERROR,  _CRTDBG_MODE_FILE );</P>
+<P>    _CrtSetReportFile( _CRT_ERROR,  _CRTDBG_FILE_STDERR);</P>
+<P>    _CrtSetReportMode( _CRT_WARN,   _CRTDBG_MODE_FILE );</P>
+
+<P>    _CrtSetReportFile( _CRT_WARN,   _CRTDBG_FILE_STDERR);</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    _RPT0(_CRT_WARN, "This is testing _CRT_WARN output\n");</P>
+<P>    _RPT0(_CRT_ERROR, "This is testing _CRT_ERROR output\n");</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    _ASSERT( 0 &amp;&amp; "testing _ASSERT" );</P>
+<P>    _ASSERTE( 0 &amp;&amp; "testing _ASSERTE" );</P>
+
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    Sleep(2000);</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Courier New" SIZE=2><P>    return 0;</P>
+<P>}</P>
+<P>//End of File</P>
+</FONT><FONT FACE="Bookman Old Style">
+</FONT><FONT FACE="Bookman Old Style" SIZE=2><P>&nbsp;</P></DIR>
+</FONT></BODY>
+
+<SCRIPT language="Javascript">
+<!--
+
+// FILE ARCHIVED ON 20020308062037 AND RETRIEVED FROM THE
+// INTERNET ARCHIVE ON 20030509151943.
+// JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+// ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+// SECTION 108(a)(3)).
+
+   var sWayBackCGI = "http://web.archive.org/web/20020308062037/";
+
+   function xLateUrl(aCollection, sProp) {
+      var i = 0;
+      for(i = 0; i < aCollection.length; i++)
+         if (aCollection[i][sProp].indexOf("mailto:") == -1 &&
+             aCollection[i][sProp].indexOf("javascript:") == -1)
+            aCollection[i][sProp] = sWayBackCGI + aCollection[i][sProp];
+   }
+
+   if (document.links)  xLateUrl(document.links, "href");
+   if (document.images) xLateUrl(document.images, "src");
+   if (document.embeds) xLateUrl(document.embeds, "src");
+
+   if (document.body && document.body.background)
+      document.body.background = sWayBackCGI + document.body.background;
+
+//-->
+
+</SCRIPT>
+</HTML>

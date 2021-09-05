@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="ISingleton.cpp" />
+    <ClCompile Include="MatrixElement.cpp" />
     <ClCompile Include="NodeClassTest.cpp" />
     <ClCompile Include="NodeData.cpp" />
     <ClCompile Include="NodeReflectionManager.cpp" />

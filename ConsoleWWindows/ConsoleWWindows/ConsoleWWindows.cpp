@@ -67,6 +67,21 @@ void ShutdownDebugConsole(void) {
 	ReadConsole(ConsoleInput, &InputBuffer, 1, &CharsRead, 0);
 }
 
+void TestConsole() {
+	AllocConsole();
+	HANDLE stdHandle;
+	int hConsole;
+	FILE* fp;
+	stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	hConsole = _open_osfhandle((long)stdHandle, _O_TEXT);
+	fp = _fdopen(hConsole, "w");
+
+	freopen_s(&fp, "CONOUT$", "w", stdout);
+
+	printf("Hello console on\n");
+	std::cout << "Windows 10" << std::endl;
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -76,7 +91,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: Place code here.
-	InitializeDebugConsole();
+	//InitializeDebugConsole();
+	TestConsole();
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);

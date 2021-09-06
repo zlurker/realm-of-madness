@@ -52,6 +52,7 @@ int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
 
 	}
 
+	return min;
 }
 
 int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axis) {
@@ -87,7 +88,7 @@ int SpaceMatrix::ReturnAxisElement(int axis, int elementId) {
 void SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
 	std::vector<int>* selectedAxis = ReturnAxis(axis);
 
-	std::rotate()
+	//std::rotate()
 }
 
 void SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {

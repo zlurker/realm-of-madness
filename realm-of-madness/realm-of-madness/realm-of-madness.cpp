@@ -3,11 +3,11 @@
 
 #include "framework.h"
 #include "realm-of-madness.h"
-#include "RenderSystem.h"
+
 
 #define MAX_LOADSTRING 100
 
-RenderSystem rs(640, 480);
+RenderSystem* rs;
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -27,6 +27,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
+	StartConsole();
+
+	rs = new RenderSystem(640, 480);
+
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -144,8 +148,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
-		rs.SetHandle(hWnd);
-		rs.BeginLoop();
+		rs->SetHandle(hWnd);
+		rs->BeginLoop();
 	}
 
 	case WM_COMMAND:
@@ -173,7 +177,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		int xPos = GET_X_LPARAM(lParam);
 		int yPos = GET_Y_LPARAM(lParam);
-		rs.SetPos(xPos, yPos);
+		rs->SetPos(xPos, yPos);
 	}
 	break;
 	case WM_LBUTTONDOWN:

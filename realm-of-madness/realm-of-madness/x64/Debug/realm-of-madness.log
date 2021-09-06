@@ -1,6 +1,8 @@
-﻿  NodeClassTest.cpp
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\NodeClassTest.h(13,1): warning C4101: 'creationInstance': unreferenced local variable
-  NodeData.cpp
-  NodeReflectionManager.cpp
+﻿  RenderSystem.cpp
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(215,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(216,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
+  realm-of-madness.cpp
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\ConsoleRedirect.h(15,44): warning C4311: 'type cast': pointer truncation from 'HANDLE' to 'long'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\ConsoleRedirect.h(15,44): warning C4302: 'type cast': truncation from 'HANDLE' to 'long'
   Generating Code...
   realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\x64\Debug\realm-of-madness.exe

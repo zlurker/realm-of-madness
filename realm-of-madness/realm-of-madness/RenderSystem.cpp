@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 
 RenderSystem::RenderSystem(int w, int h) : width(w), height(h) {
+	std::cout << "Render system initialised." << std::endl;
 	renderObjects.push_back(RenderObjectBase());
 	renderObjects.push_back(RenderObjectBase());
 }
@@ -149,6 +150,7 @@ void RenderSystem::BeginLoop() {
 
 	//::MessageBox(0, L"Thread split off.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	renderThread = std::thread(&RenderSystem::Render, this);
+
 	//RenderSetUp();
 	//while (1) {
 		//Draw();

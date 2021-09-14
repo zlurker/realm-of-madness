@@ -151,6 +151,9 @@ void RenderSystem::BeginLoop() {
 	//::MessageBox(0, L"Thread split off.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	renderThread = std::thread(&RenderSystem::Render, this);
 
+	SpaceMatrix test;
+	test.CreateNewMatrixElement(Vector2(2, 2));
+	test.CreateNewMatrixElement(Vector2(1, 3));
 	//RenderSetUp();
 	//while (1) {
 		//Draw();

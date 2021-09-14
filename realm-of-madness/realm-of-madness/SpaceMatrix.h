@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "MatrixElement.h"
+#include "HelperFunctions.h"
+#include <iostream>
 
 class SpaceMatrix
 {

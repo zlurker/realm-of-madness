@@ -9,6 +9,7 @@
 #include <vector>
 #include "RenderObjectBase.h"
 #include "Input.h"
+#include "SpaceMatrix.h"
 #include <iostream>
 //#include "Procedure.h"
 

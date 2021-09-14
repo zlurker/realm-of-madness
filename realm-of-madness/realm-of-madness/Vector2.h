@@ -8,6 +8,11 @@ public:
 		y = 0;
 	}
 
+	Vector2(float ix, float iy) {
+		x = ix;
+		y = iy;
+	}
+
 	float operator[](int);
 
 	float x;

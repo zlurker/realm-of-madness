@@ -21,8 +21,8 @@ private:
 	int BinarySearch(int, int, float, int);
 	int DetermineBinaryRange(int, float, int);
 	int ReturnAxisElement(int, int);
-	void MoveAxisElement(int, int, int);
-	void InsertAxisElement(int, int, int);
+	int MoveAxisElement(int, int, int);
+	int InsertAxisElement(int, int, int);
 	std::vector<int>* ReturnAxis(int);
 };
 

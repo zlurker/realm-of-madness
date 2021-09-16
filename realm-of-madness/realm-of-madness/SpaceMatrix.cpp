@@ -28,20 +28,26 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 		int* axisPos = matrixEle->GetAxisPosition(i);
 		bool newElement = *axisPos == -1;
 
-		if (!newElement)
+		if (!newElement) {
+			std::cout << "existing element" << std::endl;
 			if (currCoords[i] > newCoords[i])
 				rangeEnd = *axisPos;
 			else
 				rangeStart = *axisPos;
+		}
+		else
+			std::cout << "new element" << std::endl;
 
 		std::cout << "Range start: " << rangeStart << " Range End: " << rangeEnd << std::endl;
 		int insertPos = BinarySearch(rangeStart, rangeEnd, newCoords[i], i);
-		std::cout << "Axis: " << i << " Insert Pos: " << insertPos << " Value: " << newCoords[i] << std::endl;
+		//std::cout << "Exited search" << std::endl;
 
 		if (!newElement)
-			MoveAxisElement(i, *axisPos, insertPos);
+			insertPos = MoveAxisElement(i, *axisPos, insertPos);
 		else
-			InsertAxisElement(i, insertPos, elementId);
+			insertPos = InsertAxisElement(i, insertPos, elementId);
+
+		std::cout << "Axis: " << i << " Insert Pos: " << insertPos << " Value: " << newCoords[i] << std::endl;
 
 		*axisPos = insertPos;
 	}
@@ -64,7 +70,8 @@ int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
 int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axis) {
 	int difference = (rangeEnd - rangeStart) / 2;
 	//std::cout << "RS: " << rangeStart << " RE: " << rangeEnd << std::endl;
-	if (rangeStart == rangeEnd)
+
+	if (rangeEnd - rangeStart <= 1)
 		return rangeStart + DetermineBinaryRange(rangeStart, value, axis);
 
 	int axisCenterPoint = rangeStart + difference;
@@ -84,7 +91,7 @@ int SpaceMatrix::DetermineBinaryRange(int centerPoint, float value, int axis) {
 }
 
 int SpaceMatrix::ReturnAxisElement(int axis, int elementId) {
-	std::cout << elementId << (*xAxis).size();
+	//std::cout << elementId << (*xAxis).size() << std::endl;
 
 	if (axis == 0)
 		return (*xAxis)[elementId];
@@ -92,14 +99,21 @@ int SpaceMatrix::ReturnAxisElement(int axis, int elementId) {
 	return (*yAxis)[elementId];
 }
 
-void SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
+int SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
 	std::vector<int>* selectedAxis = ReturnAxis(axis);
 
+	if (0 > next)
+		next = 0;
+
+	if (next >= selectedAxis->size())
+		next = selectedAxis->size() - 1;
+
 	VectorHelpers::MoveVectorElement(selectedAxis, current, next);
+	return next;
 	//std::rotate()
 }
 
-void SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {
+int SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {
 
 	std::vector<int>* selectedAxis = ReturnAxis(axis);
 	std::cout << "insert pos: " << pos << " axis size: " << selectedAxis->size() << std::endl;
@@ -108,17 +122,18 @@ void SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {
 	if (0 > pos) {
 		std::cout << "Appending element to front" << std::endl;
 		selectedAxis->insert(selectedAxis->begin(), value);
-		return;
+		return 0;
 	}
 
 	if (pos >= selectedAxis->size()) {
 		std::cout << "Pushing back element" << std::endl;
 		selectedAxis->push_back(value);
-		return;
+		return selectedAxis->size() - 1;
 	}
 
 	std::cout << "Axis: " << axis << " Inserting at: " << pos << std::endl;
 	selectedAxis->insert(selectedAxis->begin() + pos, value);
+	return pos;
 }
 
 std::vector<int>* SpaceMatrix::ReturnAxis(int axis) {

@@ -3,6 +3,8 @@ D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(10,3
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(19,33): warning C4838: conversion from 'unsigned __int64' to 'int' requires a narrowing conversion
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(19,50): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(19,47): warning C4838: conversion from 'unsigned __int64' to 'int' requires a narrowing conversion
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(54,6): warning C4101: 'max': unreferenced local variable
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(61): warning C4172: returning address of local variable or temporary: min
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(60,6): warning C4101: 'max': unreferenced local variable
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(109,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(131,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(67): warning C4172: returning address of local variable or temporary: min
   realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\x64\Debug\realm-of-madness.exe

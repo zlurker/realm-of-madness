@@ -23,6 +23,7 @@ private:
 	int ReturnAxisElement(int, int);
 	int MoveAxisElement(int, int, int);
 	int InsertAxisElement(int, int, int);
+	void SanitiseValue(int*, int, int);
 	std::vector<int>* ReturnAxis(int);
 };
 

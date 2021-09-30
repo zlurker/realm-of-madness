@@ -21,9 +21,10 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 	std::cout << "Before loop" << std::endl;
 
 	for (int i = 0; i < 2; i++) {
-		int rangeStart, rangeEnd;
+		int rangeStart, rangeEnd, axisLength;
 		rangeStart = 0;
-		rangeEnd = axisLths[i] == 0 ? 0 : axisLths[i] - 1;
+		axisLength = axisLths[i] == 0 ? 0 : axisLths[i] - 1;
+		rangeEnd = axisLength;
 
 		int* axisPos = matrixEle->GetAxisPosition(i);
 		bool newElement = *axisPos == -1;
@@ -36,6 +37,7 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 
 		std::cout << "Range start: " << rangeStart << " Range End: " << rangeEnd << std::endl;
 		int insertPos = BinarySearch(rangeStart, rangeEnd, newCoords[i], i);
+		SanitiseValue(&insertPos, 0, axisLength);
 
 		// Can only standardise this part for insertpos. For pos > size, move and insert handles differently and as such, we will handle it in its function.
 		if (0 > insertPos)
@@ -67,33 +69,31 @@ int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
 
 int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axis) {
 	//int difference = (rangeEnd - rangeStart) / 2;
-	std::cout << "RS: " << rangeStart << " RE: " << rangeEnd << std::endl;
 
-	if (rangeEnd == rangeStart)
-		return rangeStart + DetermineBinaryRange(rangeStart, value, axis);
+	if (ReturnAxis(axis)->size() == 0)
+		return 0;
+
+	//std::cout << "RS: " << rangeStart << " RE: " << rangeEnd << std::endl;
 
 	int axisCenterPoint = (rangeStart + rangeEnd) / 2;
 	int processedCenterPoint = axisCenterPoint;
 	int binaryRangeResult = DetermineBinaryRange(ReturnAxisElement(axis, axisCenterPoint), value, axis);
+	int l = 0, r = 0;
 
 	if (binaryRangeResult == -1) {
-		processedCenterPoint--;
-
-		if (processedCenterPoint < rangeStart)
-			processedCenterPoint = rangeStart;
-
-		return BinarySearch(rangeStart, processedCenterPoint, value, axis);
+		l = rangeStart;
+		r = processedCenterPoint - 1;
 	}
 
 	if (binaryRangeResult == 1) {
-		processedCenterPoint++;
-
-		if (processedCenterPoint > rangeEnd)
-			processedCenterPoint = rangeEnd;
-		return BinarySearch(processedCenterPoint, rangeEnd, value, axis);
+		l = processedCenterPoint + 1;
+		r = rangeEnd;
 	}
 
-	return axisCenterPoint;
+	if (r >= l)
+		return BinarySearch(l, r, value, axis);
+
+	return axisCenterPoint + DetermineBinaryRange(axisCenterPoint, value, axis);
 }
 
 int SpaceMatrix::DetermineBinaryRange(int centerPoint, float value, int axis) {
@@ -106,7 +106,7 @@ int SpaceMatrix::DetermineBinaryRange(int centerPoint, float value, int axis) {
 }
 
 int SpaceMatrix::ReturnAxisElement(int axis, int elementId) {
-	std::cout << elementId << (*xAxis).size() << std::endl;
+	//std::cout << elementId << (*xAxis).size() << std::endl;
 
 	if (axis == 0)
 		return (*xAxis)[elementId];
@@ -119,6 +119,11 @@ int SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
 
 	if (next >= selectedAxis->size())
 		next = selectedAxis->size() - 1;
+
+	if (next < 0)
+		next = 0;
+
+	std::cout << "swap pos before " << current << " after " << next << std::endl;
 
 	VectorHelpers::MoveVectorElement(selectedAxis, current, next);
 	return next;
@@ -151,4 +156,12 @@ std::vector<int>* SpaceMatrix::ReturnAxis(int axis) {
 	}
 
 	return nullptr;
+}
+
+void SpaceMatrix::SanitiseValue(int* value, int min, int max) {
+	if (*value < min)
+		*value = min;
+
+	if (*value > max)
+		*value = max;
 }

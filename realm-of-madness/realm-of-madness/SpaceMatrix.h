@@ -19,14 +19,22 @@ public:
 	std::vector<AxisAccessor>* xAxis;
 	std::vector<AxisAccessor>* yAxis;
 
+	std::vector<std::vector<AxisAccessor>>* axisMatrix;
+
 	std::vector<MatrixElement> matrixElements;
 
 	SpaceMatrix();
 	int CreateNewMatrixElement(Vector2);
 	void SetMatrixElementLocation(int, Vector2);
 	int* GetElementsInRange(Vector2, Vector2);
+	void CreateAxisMatrixBounds(int);
 
 private:
+	void MapBounds(int, float, float);
+	int BinarySearchAxisMatrix(int, int, float);
+	ElementPoint ReturnAxisPointFromMatrix(int, int, int);
+	int DetermineAxisMatrixBinaryRange(int, int, int, float);
+
 	int BinarySearch(int, int, float, int);
 	int DetermineBinaryRange(int, float, int);
 	ElementPoint ReturnAxisPoint(int, int);

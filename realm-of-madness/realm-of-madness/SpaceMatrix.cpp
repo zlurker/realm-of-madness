@@ -1,19 +1,76 @@
 #include "SpaceMatrix.h"
 
 SpaceMatrix::SpaceMatrix() {
-	xAxis = new std::vector<int>();
-	yAxis = new std::vector<int>();
+	xAxis = new std::vector<AxisAccessor>();
+	yAxis = new std::vector<AxisAccessor>();
 }
 
 int SpaceMatrix::CreateNewMatrixElement(Vector2 coord)
 {
 	int id = matrixElements.size();
-	matrixElements.push_back(MatrixElement());
+	matrixElements.push_back(MatrixElement(Vector2(1, 1)));
 	SetMatrixElementLocation(id, coord);
 	return id;
 }
 
 void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
+	MatrixElement* matrixEle = &(matrixElements[elementId]);
+
+	int pointsIndex[2][2] = {
+		{PointType::XMIN, PointType::XMAX},
+		{PointType::YMIN, PointType::YMAX}
+	};
+
+	float prevPointCoordinates[4] = {
+		matrixEle->points[PointType::XMIN].pointPosition,
+		matrixEle->points[PointType::XMAX].pointPosition,
+		matrixEle->points[PointType::YMIN].pointPosition,
+		matrixEle->points[PointType::YMAX].pointPosition
+	};
+
+	matrixEle->SetMatrixPosition(newCoords);
+
+	int axisLths[2] = { xAxis->size(),yAxis->size() };
+
+	for (int i = 0; i < 2; i++)
+		for (int j = 0; j < 2; j++) {
+			int rangeStart, rangeEnd, axisLength;
+			int currPtIndex = pointsIndex[i][j];
+
+			rangeStart = 0;
+			axisLength = axisLths[i] == 0 ? 0 : axisLths[i] - 1;
+			rangeEnd = axisLength;
+
+			int* axisPos = &(matrixEle->points[currPtIndex].axisPos);// ->GetAxisPosition(i);
+			bool newElement = *axisPos == -1;
+
+			float newPtPos = matrixEle->points[currPtIndex].pointPosition;
+
+			if (!newElement)
+				if (prevPointCoordinates[currPtIndex] > newPtPos)
+					rangeEnd = *axisPos;
+				else
+					rangeStart = *axisPos;
+
+			int insertPos = BinarySearch(rangeStart, rangeEnd, newPtPos, i);
+
+			std::cout << "After Search";
+
+			// Can only standardise this part for insertpos. For pos > size, move and insert handles differently and as such, we will handle it in its function.
+			if (0 > insertPos)
+				insertPos = 0;
+
+			if (!newElement)
+				insertPos = MoveAxisElement(i, *axisPos, insertPos);
+			else
+				insertPos = InsertAxisElement(i, insertPos, AxisAccessor(elementId, currPtIndex));
+
+			std::cout << "Axis: " << i << " Insert Pos: " << insertPos << " Value: " << newCoords[i] << std::endl;
+			*axisPos = insertPos;
+		}
+}
+
+/*void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 	MatrixElement* matrixEle = &(matrixElements[elementId]);
 	Vector2 currCoords = matrixEle->coordinates;
 	int axisLths[2] = { xAxis->size(),yAxis->size() };
@@ -37,7 +94,6 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 
 		std::cout << "Range start: " << rangeStart << " Range End: " << rangeEnd << std::endl;
 		int insertPos = BinarySearch(rangeStart, rangeEnd, newCoords[i], i);
-		SanitiseValue(&insertPos, 0, axisLength);
 
 		// Can only standardise this part for insertpos. For pos > size, move and insert handles differently and as such, we will handle it in its function.
 		if (0 > insertPos)
@@ -53,16 +109,22 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 	}
 
 	matrixEle->coordinates = newCoords;
-}
+}*/
 
 int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
 	int min[2];
 	int max[2];
 
-	// Wait for array accesor
-	if (startRange.x > endRange.x) {
-
-	}
+	for (int i = 0; i < 2; i++)
+		if (startRange[i] > endRange[i]) {
+			min[i] = endRange[i];
+			max[i] = startRange[i];
+		}
+		else
+		{
+			min[i] = startRange[i];
+			max[i] = endRange[i];
+		}
 
 	return min;
 }
@@ -73,12 +135,17 @@ int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axi
 	if (ReturnAxis(axis)->size() == 0)
 		return 0;
 
-	//std::cout << "RS: " << rangeStart << " RE: " << rangeEnd << std::endl;
+	std::cout << "RS: " << rangeStart << " RE: " << rangeEnd << std::endl;
 
 	int axisCenterPoint = (rangeStart + rangeEnd) / 2;
 	int processedCenterPoint = axisCenterPoint;
-	int binaryRangeResult = DetermineBinaryRange(ReturnAxisElement(axis, axisCenterPoint), value, axis);
+
+	std::cout << "Before" << std::endl;
+
+	int binaryRangeResult = DetermineBinaryRange(axisCenterPoint, value, axis);
 	int l = 0, r = 0;
+
+	std::cout << "After" << std::endl;
 
 	if (binaryRangeResult == -1) {
 		l = rangeStart;
@@ -93,29 +160,36 @@ int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axi
 	if (r >= l)
 		return BinarySearch(l, r, value, axis);
 
+	std::cout << axisCenterPoint << std::endl;
 	return axisCenterPoint + DetermineBinaryRange(axisCenterPoint, value, axis);
 }
 
 int SpaceMatrix::DetermineBinaryRange(int centerPoint, float value, int axis) {
-	if (matrixElements[centerPoint].coordinates[axis] > value)
-		return -1;
-	if (matrixElements[centerPoint].coordinates[axis] < value)
-		return 1;
 
-	return 0;
+	ElementPoint elementPoint = ReturnAxisPoint(axis, centerPoint);
+
+	if (elementPoint.pointPosition > value)
+		return -1;
+	//if (matrixElements[centerPoint].coordinates[axis] > value)
+
+	return 1;
 }
 
-int SpaceMatrix::ReturnAxisElement(int axis, int elementId) {
+ElementPoint SpaceMatrix::ReturnAxisPoint(int axis, int axisId) {
 	//std::cout << elementId << (*xAxis).size() << std::endl;
 
-	if (axis == 0)
-		return (*xAxis)[elementId];
+	AxisAccessor accessor;
 
-	return (*yAxis)[elementId];
+	if (axis == 0)
+		accessor = (*xAxis)[axisId];
+	else
+		accessor = (*yAxis)[axisId];
+
+	return matrixElements[accessor.matrixEId].points[accessor.pType];
 }
 
 int SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
-	std::vector<int>* selectedAxis = ReturnAxis(axis);
+	std::vector<AxisAccessor>* selectedAxis = ReturnAxis(axis);
 
 	if (next >= selectedAxis->size())
 		next = selectedAxis->size() - 1;
@@ -129,9 +203,9 @@ int SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
 	return next;
 }
 
-int SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {
+int SpaceMatrix::InsertAxisElement(int axis, int pos, AxisAccessor value) {
 
-	std::vector<int>* selectedAxis = ReturnAxis(axis);
+	std::vector<AxisAccessor>* selectedAxis = ReturnAxis(axis);
 	std::cout << "insert pos: " << pos << " axis size: " << selectedAxis->size() << std::endl;
 
 	if (pos >= selectedAxis->size()) {
@@ -145,7 +219,7 @@ int SpaceMatrix::InsertAxisElement(int axis, int pos, int value) {
 	return pos;
 }
 
-std::vector<int>* SpaceMatrix::ReturnAxis(int axis) {
+std::vector<AxisAccessor>* SpaceMatrix::ReturnAxis(int axis) {
 	switch (axis) {
 	case 0: {
 		return xAxis;
@@ -164,4 +238,13 @@ void SpaceMatrix::SanitiseValue(int* value, int min, int max) {
 
 	if (*value > max)
 		*value = max;
+}
+
+AxisAccessor::AxisAccessor(int mId, int pT) {
+	matrixEId = mId;
+	pType = pT;
+}
+
+AxisAccessor::AxisAccessor() {
+
 }

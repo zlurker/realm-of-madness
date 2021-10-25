@@ -4,11 +4,20 @@
 #include "HelperFunctions.h"
 #include <iostream>
 
+class AxisAccessor {
+public:
+	AxisAccessor();
+	AxisAccessor(int, int);
+
+	int matrixEId;
+	int pType;
+};
+
 class SpaceMatrix
 {
 public:
-	std::vector<int>* xAxis;
-	std::vector<int>* yAxis;
+	std::vector<AxisAccessor>* xAxis;
+	std::vector<AxisAccessor>* yAxis;
 
 	std::vector<MatrixElement> matrixElements;
 
@@ -20,10 +29,10 @@ public:
 private:
 	int BinarySearch(int, int, float, int);
 	int DetermineBinaryRange(int, float, int);
-	int ReturnAxisElement(int, int);
+	ElementPoint ReturnAxisPoint(int, int);
 	int MoveAxisElement(int, int, int);
-	int InsertAxisElement(int, int, int);
+	int InsertAxisElement(int, int, AxisAccessor);
 	void SanitiseValue(int*, int, int);
-	std::vector<int>* ReturnAxis(int);
+	std::vector<AxisAccessor>* ReturnAxis(int);
 };
 

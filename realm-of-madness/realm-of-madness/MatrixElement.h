@@ -1,13 +1,28 @@
 #pragma once
 #include "Vector2.h"
 
+enum PointType { XMIN, XMAX, YMIN, YMAX };
+
+class ElementPoint {
+public:
+	ElementPoint();
+
+	int axisPos;
+	float pointPosition;
+	int elementId;
+};
+
+
+
 class MatrixElement {
 public:
-	MatrixElement();
-	int* GetAxisPosition(int);
+	MatrixElement(Vector2 bD);
+	//int* GetAxisPosition(int);
+	void SetMatrixPosition(Vector2 c);
+	void SetElementId(int id);
 
 	Vector2 coordinates;
-	int xAxisPos;
-	int yAxisPos;
-	
+	Vector2 boundDetails;
+	ElementPoint* points;
 };
+

@@ -152,12 +152,12 @@ void RenderSystem::BeginLoop() {
 	renderThread = std::thread(&RenderSystem::Render, this);
 
 	SpaceMatrix test;
-	test.CreateNewMatrixElement(Vector2(2, 2));
-	test.CreateNewMatrixElement(Vector2(1, 3));
-	test.CreateNewMatrixElement(Vector2(0, 1));
+	test.CreateNewMatrixElement(Vector2(2, 2), Vector2(2, 2));
+	test.CreateNewMatrixElement(Vector2(1, 3), Vector2(2, 2));
+	test.CreateNewMatrixElement(Vector2(0, 1), Vector2(2, 2));
 
-	test.SetMatrixElementLocation(2, Vector2(3, 3));
-	test.SetMatrixElementLocation(2, Vector2(0, 0));
+	//test.SetMatrixElementLocation(2, Vector2(3, 3));
+	//test.SetMatrixElementLocation(2, Vector2(0, 0));
 	//RenderSetUp();
 	//while (1) {
 		//Draw();

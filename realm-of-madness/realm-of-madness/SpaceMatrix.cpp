@@ -12,16 +12,16 @@ SpaceMatrix::SpaceMatrix() {
 	axisMatrix = new std::vector<std::vector<AxisAccessor>>[2];
 }
 
-int SpaceMatrix::CreateNewMatrixElement(Vector2 coord)
+int SpaceMatrix::CreateNewMatrixElement(Vector2 coord, Vector2 bounds)
 {
 	int id = matrixElements.size();
-	matrixElements.push_back(MatrixElement(Vector2(1, 1)));
-	SetMatrixElementLocation(id, coord);
+	matrixElements.push_back(MatrixElement(coord, bounds));
+	CreateAxisMatrixBounds(id);
 	return id;
 }
 
-void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
-	/*MatrixElement* matrixEle = &(matrixElements[elementId]);
+/*void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
+	MatrixElement* matrixEle = &(matrixElements[elementId]);
 
 	int pointsIndex[2][2] = {
 		{PointType::XMIN, PointType::XMAX},
@@ -74,8 +74,8 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 
 			std::cout << "Axis: " << i << " Insert Pos: " << insertPos << " Value: " << newCoords[i] << std::endl;
 			*axisPos = insertPos;
-		}*/
-}
+		}
+}*/
 
 void SpaceMatrix::CreateAxisMatrixBounds(int matrixElementId) {
 	MatrixElement matrixEle = matrixElements[matrixElementId];

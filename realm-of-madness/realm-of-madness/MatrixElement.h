@@ -17,7 +17,7 @@ public:
 
 class MatrixElement {
 public:
-	MatrixElement(Vector2 bD);
+	MatrixElement(Vector2 c,Vector2 bD);
 	//int* GetAxisPosition(int);
 	void SetMatrixPosition(Vector2 c);
 	void SetElementId(int id);

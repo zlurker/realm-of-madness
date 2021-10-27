@@ -1,10 +1,11 @@
 #include "MatrixElement.h"
 
-MatrixElement::MatrixElement(Vector2 bD) {
+MatrixElement::MatrixElement(Vector2 c,Vector2 bD) {
 	//xAxisPos = -1;
 	//yAxisPos = -1;
 	boundDetails = Vector2(bD.x / 2, bD.y / 2);
 	points = new ElementPoint[4];
+	SetMatrixPosition(c);
 }
 
 void MatrixElement::SetMatrixPosition(Vector2 c) {
@@ -22,7 +23,7 @@ void MatrixElement::SetElementId(int id) {
 }
 
 ElementPoint::ElementPoint() {
-	axisPos = -1;
+	//axisPos = -1;
 }
 
 /*int* MatrixElement::GetAxisPosition(int axis) {

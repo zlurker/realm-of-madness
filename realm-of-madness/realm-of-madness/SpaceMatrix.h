@@ -28,8 +28,8 @@ public:
 	std::vector<MatrixElement> matrixElements;
 
 	SpaceMatrix();
-	int CreateNewMatrixElement(Vector2);
-	void SetMatrixElementLocation(int, Vector2);
+	int CreateNewMatrixElement(Vector2, Vector2);
+	//void SetMatrixElementLocation(int, Vector2);
 	int* GetElementsInRange(Vector2, Vector2);
 	void CreateAxisMatrixBounds(int);
 

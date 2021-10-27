@@ -6,9 +6,6 @@ int pointsIndex[2][2] = {
 };
 
 SpaceMatrix::SpaceMatrix() {
-	xAxis = new std::vector<AxisAccessor>();
-	yAxis = new std::vector<AxisAccessor>();
-
 	axisMatrix = new std::vector<std::vector<AxisAccessor>>[2];
 }
 
@@ -95,11 +92,12 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 		currAxisLevel++;
 
 		PopulateAxisMatrix(axis, currAxisLevel);
+		std::cout << "Past populate matrix " << currAxisLevel;
 		int axisLength = axisMatrix[axis][currAxisLevel].size();
 		currPosInBound = BinarySearchAxisMatrix(axis, currAxisLevel, 0, axisLength - 1, boundStart);
 		prevAxisAccess = axisAccess;
 		axisAccess = ReturnAxisAccessor(axis, currAxisLevel, currPosInBound);
-	} while (currPosInBound < 1 || axisAccess->pType == pointsIndex[axis][0]);
+	} while (currPosInBound > 0 && axisAccess->pType == pointsIndex[axis][0]);
 
 	float boundEndPrev, boundEndCurr, usedBound;
 	boundEndPrev = ReturnNextBoundValue(axis, prevAxisAccess);
@@ -163,7 +161,7 @@ int SpaceMatrix::DetermineAxisMatrixBinaryRange(int axis, int matrixLayer, int m
 }
 
 void SpaceMatrix::PopulateAxisMatrix(int axis, int matrixLength) {
-	while (axisMatrix[axis].size() < matrixLength)
+	while (axisMatrix[axis].size() <= matrixLength)
 		axisMatrix[axis].push_back(std::vector<AxisAccessor>());
 }
 

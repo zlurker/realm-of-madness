@@ -21,7 +21,7 @@ int SpaceMatrix::CreateNewMatrixElement(Vector2 coord)
 }
 
 void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
-	MatrixElement* matrixEle = &(matrixElements[elementId]);
+	/*MatrixElement* matrixEle = &(matrixElements[elementId]);
 
 	int pointsIndex[2][2] = {
 		{PointType::XMIN, PointType::XMAX},
@@ -67,24 +67,24 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 			if (0 > insertPos)
 				insertPos = 0;
 
-			if (!newElement)
+			/*if (!newElement)
 				insertPos = MoveAxisElement(i, *axisPos, insertPos);
 			else
 				insertPos = InsertAxisElement(i, insertPos, AxisAccessor(elementId, currPtIndex));
 
 			std::cout << "Axis: " << i << " Insert Pos: " << insertPos << " Value: " << newCoords[i] << std::endl;
 			*axisPos = insertPos;
-		}
+		}*/
 }
 
 void SpaceMatrix::CreateAxisMatrixBounds(int matrixElementId) {
 	MatrixElement matrixEle = matrixElements[matrixElementId];
 
 	for (int i = 0; i < 2; i++)
-		MapBounds(i, matrixEle.coordinates[pointsIndex[i][0]], matrixEle.coordinates[pointsIndex[i][1]]);
+		MapBounds(i, matrixEle.coordinates[pointsIndex[i][0]], matrixEle.coordinates[pointsIndex[i][1]], matrixElementId);
 }
 
-void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd) {
+void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matrixElementId) {
 	int currAxisLevel = -1;
 	int currPosInBound = 0;
 	AxisAccessor* prevAxisAccess = nullptr;
@@ -96,7 +96,7 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd) {
 
 		PopulateAxisMatrix(axis, currAxisLevel);
 		int axisLength = axisMatrix[axis][currAxisLevel].size();
-		currPosInBound = BinarySearchAxisMatrix(axis, currAxisLevel, 0, axisLength -1, boundStart);
+		currPosInBound = BinarySearchAxisMatrix(axis, currAxisLevel, 0, axisLength - 1, boundStart);
 		prevAxisAccess = axisAccess;
 		axisAccess = ReturnAxisAccessor(axis, currAxisLevel, currPosInBound);
 	} while (currPosInBound < 1 || axisAccess->pType == pointsIndex[axis][0]);
@@ -107,11 +107,14 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd) {
 
 	usedBound = boundEndPrev < boundEndCurr ? boundEndPrev : boundEndCurr;
 
-	if (usedBound >= boundEnd) {
+	InsertAxisElement(axis, currAxisLevel, currPosInBound, AxisAccessor(matrixElementId, pointsIndex[axis][0]));
+	InsertAxisElement(axis, currAxisLevel, currPosInBound + 1, AxisAccessor(matrixElementId, pointsIndex[axis][1]));
 
-	}
-	else
-		MapBounds(axis, usedBound, boundEnd);
+	matrixElements[matrixElementId].points[pointsIndex[axis][0]].pointPosition = boundStart;
+	matrixElements[matrixElementId].points[pointsIndex[axis][1]].pointPosition = usedBound;
+
+	if (usedBound < boundEnd)
+		MapBounds(axis, usedBound, boundEnd, matrixElementId);
 }
 
 int SpaceMatrix::BinarySearchAxisMatrix(int axis, int matrixLevel, int rangeStart, int rangeEnd, float value) {
@@ -151,9 +154,9 @@ int SpaceMatrix::DetermineAxisMatrixBinaryRange(int axis, int matrixLayer, int m
 	if (accessor == nullptr)
 		return 0;
 
-	ElementPoint elePt = ReturnElementPoint(*accessor);
+	ElementPoint* elePt = ReturnElementPoint(*accessor);
 
-	if (elePt.pointPosition > value)
+	if (elePt->pointPosition > value)
 		return -1;
 	//if (matrixElements[centerPoint].coordinates[axis] > value)
 	return 1;
@@ -171,20 +174,20 @@ AxisAccessor* SpaceMatrix::ReturnAxisAccessor(int axis, int matrixLayer, int mat
 	return nullptr;
 }
 
-MatrixElement SpaceMatrix::ReturnElement(AxisAccessor accessor) {
-	return matrixElements[accessor.matrixEId];
+MatrixElement* SpaceMatrix::ReturnElement(AxisAccessor accessor) {
+	return &matrixElements[accessor.matrixEId];
 }
 
-ElementPoint SpaceMatrix::ReturnElementPoint(AxisAccessor accessor) {
-	return matrixElements[accessor.matrixEId].points[accessor.pType];
+ElementPoint* SpaceMatrix::ReturnElementPoint(AxisAccessor accessor) {
+	return &matrixElements[accessor.matrixEId].points[accessor.pType];
 }
 
-float SpaceMatrix::ReturnNextBoundValue(int axis,AxisAccessor* accessor) {
+float SpaceMatrix::ReturnNextBoundValue(int axis, AxisAccessor* accessor) {
 	if (accessor == nullptr)
 		return std::numeric_limits<float>::max();
 
-	MatrixElement prevElement = ReturnElement(*accessor);
-	return prevElement.points[pointsIndex[axis][1]].pointPosition;
+	MatrixElement* prevElement = ReturnElement(*accessor);
+	return prevElement->points[pointsIndex[axis][1]].pointPosition;
 }
 
 int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
@@ -264,8 +267,8 @@ ElementPoint SpaceMatrix::ReturnAxisPoint(int axis, int axisId) {
 	return matrixElements[accessor.matrixEId].points[accessor.pType];
 }
 
-int SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
-	std::vector<AxisAccessor>* selectedAxis = ReturnAxis(axis);
+int SpaceMatrix::MoveAxisElement(int axis, int matrixLayer, int current, int next) {
+	std::vector<AxisAccessor>* selectedAxis = &axisMatrix[axis][matrixLayer];
 
 	if (next >= selectedAxis->size())
 		next = selectedAxis->size() - 1;
@@ -279,9 +282,9 @@ int SpaceMatrix::MoveAxisElement(int axis, int current, int next) {
 	return next;
 }
 
-int SpaceMatrix::InsertAxisElement(int axis, int pos, AxisAccessor value) {
+int SpaceMatrix::InsertAxisElement(int axis, int matrixLayer, int pos, AxisAccessor value) {
 
-	std::vector<AxisAccessor>* selectedAxis = ReturnAxis(axis);
+	std::vector<AxisAccessor>* selectedAxis = &axisMatrix[axis][matrixLayer];
 	std::cout << "insert pos: " << pos << " axis size: " << selectedAxis->size() << std::endl;
 
 	if (pos >= selectedAxis->size()) {

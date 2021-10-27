@@ -34,11 +34,11 @@ public:
 	void CreateAxisMatrixBounds(int);
 
 private:
-	void MapBounds(int,float,float);
+	void MapBounds(int,float,float,int);
 	int BinarySearchAxisMatrix(int, int, int, int, float);
 	AxisAccessor* ReturnAxisAccessor(int, int, int);
-	MatrixElement ReturnElement(AxisAccessor);
-	ElementPoint ReturnElementPoint(AxisAccessor);
+	MatrixElement* ReturnElement(AxisAccessor);
+	ElementPoint* ReturnElementPoint(AxisAccessor);
 	float ReturnNextBoundValue(int,AxisAccessor*);
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
 	void PopulateAxisMatrix(int,int);
@@ -46,8 +46,8 @@ private:
 	int BinarySearch(int, int, float, int);
 	int DetermineBinaryRange(int, float, int);
 	ElementPoint ReturnAxisPoint(int, int);
-	int MoveAxisElement(int, int, int);
-	int InsertAxisElement(int, int, AxisAccessor);
+	int MoveAxisElement(int, int,int, int);
+	int InsertAxisElement(int,int, int, AxisAccessor);
 	void SanitiseValue(int*, int, int);
 	std::vector<AxisAccessor>* ReturnAxis(int);
 };

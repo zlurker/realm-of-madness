@@ -7,7 +7,8 @@ class ElementPoint {
 public:
 	ElementPoint();
 
-	int axisPos;
+	// Need to find alternative for this.
+	//int axisPos;
 	float pointPosition;
 	int elementId;
 };

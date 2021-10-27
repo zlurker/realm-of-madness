@@ -32,6 +32,7 @@ public:
 	//void SetMatrixElementLocation(int, Vector2);
 	int* GetElementsInRange(Vector2, Vector2);
 	void CreateAxisMatrixBounds(int);
+	void GenerateMatrix(int);
 
 private:
 	void MapBounds(int,float,float,int);

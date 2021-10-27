@@ -3,6 +3,10 @@
 #include "MatrixElement.h"
 #include "HelperFunctions.h"
 #include <iostream>
+#include <limits>
+#include <tuple>
+
+enum MatrixLayerType { UP, CONTINUE, DOWN };
 
 class AxisAccessor {
 public:
@@ -30,10 +34,14 @@ public:
 	void CreateAxisMatrixBounds(int);
 
 private:
-	void MapBounds(int, float, float);
-	int BinarySearchAxisMatrix(int, int, float);
-	ElementPoint ReturnAxisPointFromMatrix(int, int, int);
+	void MapBounds(int,float,float);
+	int BinarySearchAxisMatrix(int, int, int, int, float);
+	AxisAccessor* ReturnAxisAccessor(int, int, int);
+	MatrixElement ReturnElement(AxisAccessor);
+	ElementPoint ReturnElementPoint(AxisAccessor);
+	float ReturnNextBoundValue(int,AxisAccessor*);
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
+	void PopulateAxisMatrix(int,int);
 
 	int BinarySearch(int, int, float, int);
 	int DetermineBinaryRange(int, float, int);

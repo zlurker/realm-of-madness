@@ -1,5 +1,10 @@
 #include "SpaceMatrix.h"
 
+int pointsIndex[2][2] = {
+	{PointType::XMIN, PointType::XMAX},
+	{PointType::YMIN, PointType::YMAX}
+};
+
 SpaceMatrix::SpaceMatrix() {
 	xAxis = new std::vector<AxisAccessor>();
 	yAxis = new std::vector<AxisAccessor>();
@@ -75,40 +80,112 @@ void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 void SpaceMatrix::CreateAxisMatrixBounds(int matrixElementId) {
 	MatrixElement matrixEle = matrixElements[matrixElementId];
 
-	int pointsIndex[2][2] = {
-		{PointType::XMIN, PointType::XMAX},
-		{PointType::YMIN, PointType::YMAX}
-	};
-
 	for (int i = 0; i < 2; i++)
 		MapBounds(i, matrixEle.coordinates[pointsIndex[i][0]], matrixEle.coordinates[pointsIndex[i][1]]);
 }
 
 void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd) {
+	int currAxisLevel = -1;
+	int currPosInBound = 0;
+	AxisAccessor* prevAxisAccess = nullptr;
+	AxisAccessor* axisAccess = nullptr;
 
+	// Search to find a empty bound range
+	do {
+		currAxisLevel++;
+
+		PopulateAxisMatrix(axis, currAxisLevel);
+		int axisLength = axisMatrix[axis][currAxisLevel].size();
+		currPosInBound = BinarySearchAxisMatrix(axis, currAxisLevel, 0, axisLength -1, boundStart);
+		prevAxisAccess = axisAccess;
+		axisAccess = ReturnAxisAccessor(axis, currAxisLevel, currPosInBound);
+	} while (currPosInBound < 1 || axisAccess->pType == pointsIndex[axis][0]);
+
+	float boundEndPrev, boundEndCurr, usedBound;
+	boundEndPrev = ReturnNextBoundValue(axis, prevAxisAccess);
+	boundEndCurr = ReturnNextBoundValue(axis, axisAccess);
+
+	usedBound = boundEndPrev < boundEndCurr ? boundEndPrev : boundEndCurr;
+
+	if (usedBound >= boundEnd) {
+
+	}
+	else
+		MapBounds(axis, usedBound, boundEnd);
 }
 
-int SpaceMatrix::BinarySearchAxisMatrix(int axis, int matrixLevel, float value) {
+int SpaceMatrix::BinarySearchAxisMatrix(int axis, int matrixLevel, int rangeStart, int rangeEnd, float value) {
+	if (axisMatrix[axis][matrixLevel].size() == 0)
+		return 0;
 
+	int axisCenterPoint = (rangeStart + rangeEnd) / 2;
+	int processedCenterPoint = axisCenterPoint;
+
+	std::cout << "Before" << std::endl;
+
+	int binaryRangeResult = DetermineAxisMatrixBinaryRange(axis, matrixLevel, axisCenterPoint, value);
+	int l = 0, r = 0;
+
+	std::cout << "After" << std::endl;
+
+	if (binaryRangeResult == -1) {
+		l = rangeStart;
+		r = processedCenterPoint - 1;
+	}
+
+	if (binaryRangeResult == 1) {
+		l = processedCenterPoint + 1;
+		r = rangeEnd;
+	}
+
+	if (r >= l)
+		return BinarySearchAxisMatrix(axis, matrixLevel, l, r, value);
+
+	std::cout << axisCenterPoint << std::endl;
+	return axisCenterPoint + binaryRangeResult;
 }
 
 int SpaceMatrix::DetermineAxisMatrixBinaryRange(int axis, int matrixLayer, int matrixLayerElementId, float value) {
-	ElementPoint elePt = ReturnAxisPointFromMatrix(axis, matrixLayer, matrixLayerElementId);
+	AxisAccessor* accessor = ReturnAxisAccessor(axis, matrixLayer, matrixLayerElementId);
+
+	if (accessor == nullptr)
+		return 0;
+
+	ElementPoint elePt = ReturnElementPoint(*accessor);
 
 	if (elePt.pointPosition > value)
 		return -1;
 	//if (matrixElements[centerPoint].coordinates[axis] > value)
-
 	return 1;
 }
 
-ElementPoint SpaceMatrix::ReturnAxisPointFromMatrix(int axis,int matrixLayer, int matrixLayerElementId) {
-	AxisAccessor accessor = axisMatrix[axis][matrixLayer][matrixLayerElementId];
+void SpaceMatrix::PopulateAxisMatrix(int axis, int matrixLength) {
+	while (axisMatrix[axis].size() < matrixLength)
+		axisMatrix[axis].push_back(std::vector<AxisAccessor>());
+}
+
+AxisAccessor* SpaceMatrix::ReturnAxisAccessor(int axis, int matrixLayer, int matrixLayerElementId) {
+	if (axisMatrix[axis][matrixLayer].size() > matrixLayerElementId)
+		return &axisMatrix[axis][matrixLayer][matrixLayerElementId];
+
+	return nullptr;
+}
+
+MatrixElement SpaceMatrix::ReturnElement(AxisAccessor accessor) {
+	return matrixElements[accessor.matrixEId];
+}
+
+ElementPoint SpaceMatrix::ReturnElementPoint(AxisAccessor accessor) {
 	return matrixElements[accessor.matrixEId].points[accessor.pType];
 }
 
+float SpaceMatrix::ReturnNextBoundValue(int axis,AxisAccessor* accessor) {
+	if (accessor == nullptr)
+		return std::numeric_limits<float>::max();
 
-
+	MatrixElement prevElement = ReturnElement(*accessor);
+	return prevElement.points[pointsIndex[axis][1]].pointPosition;
+}
 
 int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
 	int min[2];

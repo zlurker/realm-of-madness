@@ -103,8 +103,9 @@ void SpaceMatrix::GenerateMatrix(int axis) {
 void SpaceMatrix::CreateAxisMatrixBounds(int matrixElementId) {
 	MatrixElement matrixEle = matrixElements[matrixElementId];
 	std::cout << "creating bounds for " << matrixElementId << std::endl;
-	for (int i = 0; i < 2; i++)
-		MapBounds(i, matrixEle.points[pointsIndex[i][0]].pointPosition, matrixEle.points[pointsIndex[i][1]].pointPosition, matrixElementId);
+	//for (int i = 0; i < 2; i++)
+		//MapBounds(i, matrixEle.points[pointsIndex[i][0]].pointPosition, matrixEle.points[pointsIndex[i][1]].pointPosition, matrixElementId);
+	MapBounds(0, matrixEle.points[pointsIndex[0][0]].pointPosition, matrixEle.points[pointsIndex[0][1]].pointPosition, matrixElementId);
 }
 
 void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matrixElementId) {
@@ -351,6 +352,12 @@ int SpaceMatrix::InsertAxisElement(int axis, int matrixLayer, int pos, AxisAcces
 	std::cout << "selected matrix: " << matrixLayer << " matrixLen: " << selectedAxis->size() << std::endl;
 	//std::cout << "insert pos: " << pos << " axis size: " << selectedAxis->size() << std::endl;
 
+	std::cout << "Elements pre insert for " << matrixLayer << ": ";
+	for (int j = 0; j < selectedAxis->size(); j++)
+		std::cout << ReturnElementPoint((*selectedAxis)[j])->pointPosition << ' ';
+
+	std::cout << std::endl;
+
 	if (pos >= selectedAxis->size()) {
 		//std::cout << "Pushing back element" << std::endl;
 		selectedAxis->push_back(value);
@@ -359,6 +366,7 @@ int SpaceMatrix::InsertAxisElement(int axis, int matrixLayer, int pos, AxisAcces
 
 	//std::cout  << " Inserting at: " << pos << " value: " <<  std::endl;
 	selectedAxis->insert(selectedAxis->begin() + pos, value);
+
 	return pos;
 }
 

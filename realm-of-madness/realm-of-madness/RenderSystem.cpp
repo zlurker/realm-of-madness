@@ -154,7 +154,7 @@ void RenderSystem::BeginLoop() {
 	SpaceMatrix test;
 	test.CreateNewMatrixElement(Vector2(5, 2), Vector2(8, 2));
 	test.CreateNewMatrixElement(Vector2(10, 3), Vector2(6, 2));
-	test.CreateNewMatrixElement(Vector2(15, 1), Vector2(14, 2));
+	//test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
 	test.GenerateMatrix(0);
 	//test.SetMatrixElementLocation(2, Vector2(3, 3));
 	//test.SetMatrixElementLocation(2, Vector2(0, 0));

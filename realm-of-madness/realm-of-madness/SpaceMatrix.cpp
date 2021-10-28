@@ -83,12 +83,18 @@ void SpaceMatrix::GenerateMatrix(int axis) {
 
 		for (int j = 0; j < 100; j++) {
 			if (currInMatrix < axisMatrix[axis][i].size() && ReturnElementPoint(axisMatrix[axis][i][currInMatrix])->pointPosition == j) {
-				currInMatrix++;
+				while (currInMatrix < axisMatrix[axis][i].size() && ReturnElementPoint(axisMatrix[axis][i][currInMatrix])->pointPosition == j)
+					currInMatrix++;
 				std::cout << 'x';
 			}
 			else
 				std::cout << '*';
 		}
+
+		std::cout << std::endl;
+
+		for (int j = 0; j < axisMatrix[axis][i].size(); j++)
+			std::cout << ReturnElementPoint(axisMatrix[axis][i][j])->pointPosition << ' ';
 
 		std::cout << std::endl;
 	}
@@ -104,9 +110,13 @@ void SpaceMatrix::CreateAxisMatrixBounds(int matrixElementId) {
 void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matrixElementId) {
 	int currAxisLevel = -1;
 	int currPosInBound = 0;
-	AxisAccessor* prevAxisAccess = nullptr;
-	AxisAccessor* axisAccess = nullptr;
+	AxisAccessor* prevAxisAccessEnd = nullptr;
+	AxisAccessor* curraxisAccessEnd = nullptr;
+	AxisAccessor* curraxisAccessFront = nullptr;
 
+
+	if (axis == 0)
+		std::cout << "map bound start" << std::endl;
 	// Search to find a empty bound range
 	do {
 		currAxisLevel += 1;
@@ -114,23 +124,37 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 		PopulateAxisMatrix(axis, currAxisLevel);
 		int axisLength = axisMatrix[axis][currAxisLevel].size();
 		currPosInBound = BinarySearchAxisMatrix(axis, currAxisLevel, 0, axisLength - 1, boundStart);
-		prevAxisAccess = axisAccess;
-		axisAccess = ReturnAxisAccessor(axis, currAxisLevel, currPosInBound);
+		prevAxisAccessEnd = curraxisAccessEnd;
+		curraxisAccessEnd = ReturnAxisAccessor(axis, currAxisLevel, currPosInBound);
+		curraxisAccessFront = ReturnAxisAccessor(axis, currAxisLevel, currPosInBound - 1);
 
-		if (axis == 0 && axisAccess != nullptr) {
+		if (axis == 0) {
 			std::cout << "currPosInBound" << currPosInBound << std::endl;
-			std::cout << "ptype: " << axisAccess->pType << "startingType: " << pointsIndex[axis][0] << std::endl;
+
+			if (curraxisAccessFront != nullptr)
+				std::cout << "front ptype: " << curraxisAccessFront->pType << "startingType: " << pointsIndex[axis][0] << std::endl;
+
+			if (curraxisAccessEnd != nullptr)
+				std::cout << "cb ptype: " << curraxisAccessEnd->pType << "startingType: " << pointsIndex[axis][0] << std::endl;
+
+			if (prevAxisAccessEnd != nullptr)
+				std::cout << "pb ptype: " << prevAxisAccessEnd->pType << "startingType: " << pointsIndex[axis][0] << std::endl;
 		}
-	} while (currPosInBound > 0 && axisAccess != nullptr && axisAccess->pType == pointsIndex[axis][0]);
+	} while (currPosInBound > 0 && curraxisAccessFront != nullptr && curraxisAccessFront->pType == pointsIndex[axis][0]);
 
 	float boundEndPrev, boundEndCurr, usedBound;
-	boundEndPrev = ReturnNextBoundValue(axis, prevAxisAccess);
-	boundEndCurr = ReturnNextBoundValue(axis, axisAccess);
+	// Checks to see the ending of the current collided end in previous matrix layer.
+	boundEndPrev = ReturnNextBoundValue(axis, prevAxisAccessEnd, pointsIndex[axis][1]);
+	// Checks to see the next collided end in current matrix layer.
+	boundEndCurr = ReturnNextBoundValue(axis, curraxisAccessEnd, pointsIndex[axis][0]);
 
 	usedBound = boundEndPrev < boundEndCurr ? boundEndPrev : boundEndCurr;
 	bool cutBound = usedBound < boundEnd;
 
 	usedBound = cutBound ? usedBound : boundEnd;
+
+	if (axis == 0)
+		std::cout << "prev bound: " << boundEndPrev << " curr bound: " << boundEndCurr << "boundEnd: " << boundEnd << std::endl;
 
 	matrixElements[matrixElementId].points[pointsIndex[axis][0]].pointPosition = boundStart;
 	matrixElements[matrixElementId].points[pointsIndex[axis][1]].pointPosition = usedBound;
@@ -172,7 +196,8 @@ int SpaceMatrix::BinarySearchAxisMatrix(int axis, int matrixLevel, int rangeStar
 	if (r >= l)
 		return BinarySearchAxisMatrix(axis, matrixLevel, l, r, value);
 
-	std::cout << "center pt: " << axisCenterPoint << " rangeR: " << binaryRangeResult <<  std::endl;
+	if (axis == 0)
+		std::cout << "center pt: " << axisCenterPoint << " rangeR: " << binaryRangeResult << " vlen: " << axisMatrix[axis][matrixLevel].size() << std::endl;
 	return axisCenterPoint + binaryRangeResult;
 }
 
@@ -183,7 +208,9 @@ int SpaceMatrix::DetermineAxisMatrixBinaryRange(int axis, int matrixLayer, int m
 		return 0;
 
 	ElementPoint* elePt = ReturnElementPoint(*accessor);
-	std::cout << "pointpos: " <<elePt->pointPosition << " compared val: " << value << std::endl;
+
+	//if (axis == 0)
+		//std::cout << "pointpos: " << elePt->pointPosition << " compared val: " << value << " eleId: " << matrixLayerElementId << std::endl;
 
 	if (elePt->pointPosition > value)
 		return 0;
@@ -192,8 +219,15 @@ int SpaceMatrix::DetermineAxisMatrixBinaryRange(int axis, int matrixLayer, int m
 }
 
 void SpaceMatrix::PopulateAxisMatrix(int axis, int matrixLength) {
-	while (axisMatrix[axis].size() <= matrixLength)
+	bool runPrint = false;
+	while (axisMatrix[axis].size() <= matrixLength) {
 		axisMatrix[axis].push_back(std::vector<AxisAccessor>());
+		runPrint = true;
+	}
+
+	if (runPrint)
+		for (int i = 0; i < axisMatrix[axis].size(); i++)
+			std::cout << "matrix v: " << i << " len: " << axisMatrix[axis][i].size() << std::endl;
 }
 
 AxisAccessor* SpaceMatrix::ReturnAxisAccessor(int axis, int matrixLayer, int matrixLayerElementId) {
@@ -211,8 +245,8 @@ ElementPoint* SpaceMatrix::ReturnElementPoint(AxisAccessor accessor) {
 	return &matrixElements[accessor.matrixEId].points[accessor.pType];
 }
 
-float SpaceMatrix::ReturnNextBoundValue(int axis, AxisAccessor* accessor) {
-	if (accessor == nullptr)
+float SpaceMatrix::ReturnNextBoundValue(int axis, AxisAccessor* accessor, int acceptedBound) {
+	if (accessor == nullptr || accessor->pType != acceptedBound)
 		return std::numeric_limits<float>::max();
 
 	MatrixElement* prevElement = ReturnElement(*accessor);
@@ -314,6 +348,7 @@ int SpaceMatrix::MoveAxisElement(int axis, int matrixLayer, int current, int nex
 int SpaceMatrix::InsertAxisElement(int axis, int matrixLayer, int pos, AxisAccessor value) {
 
 	std::vector<AxisAccessor>* selectedAxis = &axisMatrix[axis][matrixLayer];
+	std::cout << "selected matrix: " << matrixLayer << " matrixLen: " << selectedAxis->size() << std::endl;
 	//std::cout << "insert pos: " << pos << " axis size: " << selectedAxis->size() << std::endl;
 
 	if (pos >= selectedAxis->size()) {
@@ -322,7 +357,7 @@ int SpaceMatrix::InsertAxisElement(int axis, int matrixLayer, int pos, AxisAcces
 		return selectedAxis->size() - 1;
 	}
 
-	//std::cout << "Axis: " << axis << " Inserting at: " << pos << std::endl;
+	//std::cout  << " Inserting at: " << pos << " value: " <<  std::endl;
 	selectedAxis->insert(selectedAxis->begin() + pos, value);
 	return pos;
 }

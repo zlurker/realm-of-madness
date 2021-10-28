@@ -40,7 +40,7 @@ private:
 	AxisAccessor* ReturnAxisAccessor(int, int, int);
 	MatrixElement* ReturnElement(AxisAccessor);
 	ElementPoint* ReturnElementPoint(AxisAccessor);
-	float ReturnNextBoundValue(int,AxisAccessor*);
+	float ReturnNextBoundValue(int,AxisAccessor*, int);
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
 	void PopulateAxisMatrix(int,int);
 

@@ -11,10 +11,11 @@ enum MatrixLayerType { UP, CONTINUE, DOWN };
 class AxisAccessor {
 public:
 	AxisAccessor();
-	AxisAccessor(int, int);
+	AxisAccessor(int, int,int);
 
-	int matrixEId;
-	int pType;
+	int matrixElementId;
+	int boundId;
+	int boundType;
 };
 
 class SpaceMatrix
@@ -39,14 +40,13 @@ private:
 	int BinarySearchAxisMatrix(int, int, int, int, float);
 	AxisAccessor* ReturnAxisAccessor(int, int, int);
 	MatrixElement* ReturnElement(AxisAccessor);
-	ElementPoint* ReturnElementPoint(AxisAccessor);
+	float ReturnBoundValue(AxisAccessor);
 	float ReturnNextBoundValue(int,AxisAccessor*, int);
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
 	void PopulateAxisMatrix(int,int);
 
-	int BinarySearch(int, int, float, int);
-	int DetermineBinaryRange(int, float, int);
-	ElementPoint ReturnAxisPoint(int, int);
+	//int BinarySearch(int, int, float, int);
+	//int DetermineBinaryRange(int, float, int);
 	int MoveAxisElement(int, int,int, int);
 	int InsertAxisElement(int,int, int, AxisAccessor);
 	void SanitiseValue(int*, int, int);

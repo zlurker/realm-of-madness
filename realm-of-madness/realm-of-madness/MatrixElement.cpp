@@ -1,5 +1,21 @@
 #include "MatrixElement.h"
 
+ElementPoint::ElementPoint() {
+	//axisPos = -1;
+}
+
+MatrixElementBounds::MatrixElementBounds(float bS, float bE) {
+	boundStart = bS;
+	boundEnd = bE;
+}
+
+float MatrixElementBounds::operator[](int index) {
+	if (index == 0)
+		return boundStart;
+
+	return boundEnd;
+}
+
 MatrixElement::MatrixElement(Vector2 c,Vector2 bD) {
 	//xAxisPos = -1;
 	//yAxisPos = -1;
@@ -22,9 +38,7 @@ void MatrixElement::SetElementId(int id) {
 		points[i].elementId = id;
 }
 
-ElementPoint::ElementPoint() {
-	//axisPos = -1;
-}
+
 
 /*int* MatrixElement::GetAxisPosition(int axis) {
 	switch (axis) {

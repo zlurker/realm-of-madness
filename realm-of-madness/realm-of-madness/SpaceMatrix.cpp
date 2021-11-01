@@ -103,9 +103,9 @@ void SpaceMatrix::GenerateMatrix(int axis) {
 void SpaceMatrix::CreateAxisMatrixBounds(int matrixElementId) {
 	MatrixElement matrixEle = matrixElements[matrixElementId];
 	std::cout << "creating bounds for " << matrixElementId << std::endl;
-	//for (int i = 0; i < 2; i++)
-		//MapBounds(i, matrixEle.points[pointsIndex[i][0]].pointPosition, matrixEle.points[pointsIndex[i][1]].pointPosition, matrixElementId);
-	MapBounds(0, matrixEle.points[pointsIndex[0][0]].pointPosition, matrixEle.points[pointsIndex[0][1]].pointPosition, matrixElementId);
+	for (int i = 0; i < 2; i++)
+		MapBounds(i, matrixEle.points[pointsIndex[i][0]].pointPosition, matrixEle.points[pointsIndex[i][1]].pointPosition, matrixElementId);
+	//MapBounds(0, matrixEle.points[pointsIndex[0][0]].pointPosition, matrixEle.points[pointsIndex[0][1]].pointPosition, matrixElementId);
 }
 
 void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matrixElementId) {

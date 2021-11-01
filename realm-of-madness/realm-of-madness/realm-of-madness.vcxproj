@@ -144,6 +144,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="HelperFunctions.h" />
     <ClInclude Include="IClickable.h" />
+    <ClInclude Include="IDGenerator.h" />
     <ClInclude Include="IDraggable.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MatrixElement.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="IDGenerator.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="ISingleton.cpp" />
     <ClCompile Include="MatrixElement.cpp" />
@@ -174,7 +176,7 @@
     <ClCompile Include="SpaceMatrix.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="VectorHelpers.cpp" />
+    <ClCompile Include="HelpFunctions.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>

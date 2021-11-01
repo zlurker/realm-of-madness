@@ -152,19 +152,19 @@ void RenderSystem::BeginLoop() {
 	renderThread = std::thread(&RenderSystem::Render, this);
 	std::vector<VectorHelpers::VectorBase> v;
 
-	v.push_back(VectorHelpers::VectorBase(1));
-	v.push_back(VectorHelpers::VectorBase(2));
-	v.push_back(VectorHelpers::VectorBase(3));
-	v.push_back(VectorHelpers::VectorBase(4));
-	v.push_back(VectorHelpers::VectorBase(5));
-	v.push_back(VectorHelpers::VectorBase(6));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
 
 	VectorHelpers::VectorBase vectorBase = v[4];
-
+	
 	//v.push_back(tV);	
 	VectorHelpers::RemoveVectorElement(&v, &v[3]);
 	VectorHelpers::GetVectorPosition(&v,&vectorBase);
-
+	
 	/*std::vector<int> v;
 
 	v.push_back(1);

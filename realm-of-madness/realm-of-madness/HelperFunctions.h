@@ -13,7 +13,7 @@ namespace VectorHelpers {
 	};
 
 	template<class T>
-	void MoveVectorElement(std::vector<T>* vector, int from, int to) {
+	inline void MoveVectorElement(std::vector<T>* vector, int from, int to) {
 
 		if (from < to)
 			std::rotate(vector->begin() + from, vector->begin() + from + 1, vector->begin() + to + 1);
@@ -21,14 +21,11 @@ namespace VectorHelpers {
 			std::rotate(vector->rend() - from - 1, vector->rend() - from, vector->rend() - to);
 	}
 
-	template<class T>
-	int GetVectorPosition(std::vector<T>* vector, T* item) {
+	inline int GetVectorPosition(std::vector<VectorBase>* vector, VectorBase* item) {
 		auto it = std::find(vector->begin(), vector->end(), *item);
 
 		if (it != vector->end())
 		{
-			// calculating the index
-			// of K
 			int index = it - vector->begin();
 			std::cout << index << std::endl;
 			return index;
@@ -37,9 +34,7 @@ namespace VectorHelpers {
 		return -1;
 	}
 
-	template<class T>
-	void RemoveVectorElement(std::vector<T>* vector, T* item) {
-		
+	inline void RemoveVectorElement(std::vector<VectorBase>* vector, VectorBase* item) {		
 		int index = GetVectorPosition(vector,item);
 		vector->erase(vector->begin() + index);
 	}

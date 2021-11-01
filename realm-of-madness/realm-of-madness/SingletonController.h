@@ -20,6 +20,7 @@ private:
 	std::vector<ISingleton*> singletons;
 };
 
+// I want to find a way to stop depending on this macro. Maybe create a map.
 #define SINGLETON(T) \
 static T* instance = new T(); \
 //singletonControllerInstance->singletons.push_back((ISingleton)instance); \

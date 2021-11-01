@@ -150,15 +150,45 @@ void RenderSystem::BeginLoop() {
 
 	//::MessageBox(0, L"Thread split off.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	renderThread = std::thread(&RenderSystem::Render, this);
+	std::vector<VectorHelpers::VectorBase> v;
 
-	SpaceMatrix test;
+	v.push_back(VectorHelpers::VectorBase(1));
+	v.push_back(VectorHelpers::VectorBase(2));
+	v.push_back(VectorHelpers::VectorBase(3));
+	v.push_back(VectorHelpers::VectorBase(4));
+	v.push_back(VectorHelpers::VectorBase(5));
+	v.push_back(VectorHelpers::VectorBase(6));
+
+	VectorHelpers::VectorBase vectorBase = v[4];
+
+	//v.push_back(tV);	
+	VectorHelpers::RemoveVectorElement(&v, &v[3]);
+	VectorHelpers::GetVectorPosition(&v,&vectorBase);
+
+	/*std::vector<int> v;
+
+	v.push_back(1);
+	v.push_back(2);
+	v.push_back(3);
+	v.push_back(4);
+	v.push_back(5);
+	v.push_back(6);
+
+	int tV = v[4];
+
+	VectorHelpers::RemoveVectorElement(&v, &v[3]);
+	VectorHelpers::GetVectorPosition(&v, &tV);*/
+
+	//std::cout << "currNumber: " << *tV << std::endl;
+
+	/*SpaceMatrix test;
 	test.CreateNewMatrixElement(Vector2(5, 2), Vector2(6, 2));
 	test.CreateNewMatrixElement(Vector2(10, 3), Vector2(8, 2));
 	test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
 	test.CreateNewMatrixElement(Vector2(6, 1), Vector2(6, 2));
 	test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
 	test.GenerateMatrix(0);
-	test.GenerateMatrix(1);
+	test.GenerateMatrix(1);*/
 	//test.SetMatrixElementLocation(2, Vector2(3, 3));
 	//test.SetMatrixElementLocation(2, Vector2(0, 0));
 	//RenderSetUp();

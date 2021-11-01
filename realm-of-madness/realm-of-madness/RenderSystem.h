@@ -11,6 +11,7 @@
 #include "Input.h"
 #include "SpaceMatrix.h"
 #include <iostream>
+#include "HelperFunctions.h"
 //#include "Procedure.h"
 
 class RenderSystem {
@@ -34,8 +35,6 @@ public:
 	void SetPos(int x, int c);
 	int width;
 	int height;
-
-
 
 	std::mutex lock;
 	GLdouble offsetTest;

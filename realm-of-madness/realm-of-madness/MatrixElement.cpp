@@ -4,19 +4,27 @@ ElementPoint::ElementPoint() {
 	//axisPos = -1;
 }
 
-MatrixElementBounds::MatrixElementBounds(float bS, float bE) {
-	boundStart = bS;
-	boundEnd = bE;
+BoundData::BoundData(float bP, int bI) {
+	boundPoint = bP;
+	boundIdentifier = bI;
 }
 
-float MatrixElementBounds::operator[](int index) {
-	if (index == 0)
-		return boundStart;
+MatrixElementBounds::MatrixElementBounds(int mL, float bPS, float bPE, int bIS, int bIE) {
+	boundData = new BoundData[2]{
+		BoundData(bPS, bIS),
+		BoundData(bPE,bIE)
+	};
 
-	return boundEnd;
+	matrixLayer = mL;
+	parent = std::make_pair(-1, -1);
+	child = std::make_pair(-1, -1);
 }
 
-MatrixElement::MatrixElement(Vector2 c,Vector2 bD) {
+BoundData MatrixElementBounds::operator[](int index) {
+	return boundData[index];
+}
+
+MatrixElement::MatrixElement(Vector2 c, Vector2 bD) {
 	//xAxisPos = -1;
 	//yAxisPos = -1;
 	boundDetails = Vector2(bD.x / 2, bD.y / 2);

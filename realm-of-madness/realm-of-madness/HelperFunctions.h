@@ -6,6 +6,7 @@ namespace VectorHelpers {
 
 	class VectorBase {
 	public:
+		VectorBase();
 		VectorBase(int);
 		VectorBase* GetAddress();
 		bool operator==(const VectorBase&);

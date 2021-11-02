@@ -2,16 +2,17 @@
 #include <vector>
 #include "MatrixElement.h"
 #include "HelperFunctions.h"
+#include "IDGenerator.h"
 #include <iostream>
 #include <limits>
 #include <tuple>
 
 enum MatrixLayerType { UP, CONTINUE, DOWN };
 
-class AxisAccessor {
+class AxisAccessor: public VectorHelpers::VectorBase {
 public:
 	AxisAccessor();
-	AxisAccessor(int, int,int);
+	AxisAccessor(int, int,int,int);
 
 	int matrixElementId;
 	int boundId;
@@ -40,10 +41,13 @@ private:
 	int BinarySearchAxisMatrix(int, int, int, int, float);
 	AxisAccessor* ReturnAxisAccessor(int, int, int);
 	MatrixElement* ReturnElement(AxisAccessor);
+	MatrixElementBounds* ReturnBound(AxisAccessor accessor);
 	float ReturnBoundValue(AxisAccessor);
 	float ReturnNextBoundValue(int,AxisAccessor*, int);
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
 	void PopulateAxisMatrix(int,int);
+	void MapParentChildBounds(AxisAccessor*, AxisAccessor*);
+
 
 	//int BinarySearch(int, int, float, int);
 	//int DetermineBinaryRange(int, float, int);

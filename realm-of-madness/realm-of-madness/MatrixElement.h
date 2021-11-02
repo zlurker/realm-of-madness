@@ -15,13 +15,24 @@ public:
 	int elementId;
 };
 
+
+class BoundData {
+public:
+	BoundData(float, int);
+
+	float boundPoint;
+	int boundIdentifier;
+};
+
 class MatrixElementBounds {
 public:
-	MatrixElementBounds(float bS, float bE);
-	float operator[](int);
+	MatrixElementBounds(int,float, float,int , int);
+	BoundData operator[](int);
+	int matrixLayer;
+	BoundData* boundData;
 
-	float boundStart;
-	float boundEnd;
+	std::pair<int, int> parent;
+	std::pair<int, int> child;
 };
 
 

@@ -1,6 +1,10 @@
 #include "HelperFunctions.h"
 
 namespace VectorHelpers {
+
+	VectorBase::VectorBase() {
+
+	}
 	VectorBase::VectorBase(int id) {
 		baseId = id;
 		std::cout << "id generated: " << id << std::endl;

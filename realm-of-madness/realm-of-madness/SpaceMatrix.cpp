@@ -151,12 +151,17 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 	std::cout << "prev bound: " << boundEndPrev << " curr bound: " << boundEndCurr << "boundEnd: " << boundEnd << std::endl;
 
 	int elementBoundId = matrixElements[matrixElementId].matrixBounds.size();
-	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(boundStart, usedBound));
 
-	InsertAxisElement(axis, currAxisLevel, currPosInBound, AxisAccessor(matrixElementId, elementBoundId, BoundType::START));
-	InsertAxisElement(axis, currAxisLevel, currPosInBound + 1, AxisAccessor(matrixElementId, elementBoundId, BoundType::END));
+	int bsUID = IDGenerator::instance->GenerateIdForGroup("AxisMatrix");
+	int beUID = IDGenerator::instance->GenerateIdForGroup("AxisMatrix");
+	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(currAxisLevel, boundStart, usedBound, bsUID, beUID));
+
+	InsertAxisElement(axis, currAxisLevel, currPosInBound, AxisAccessor(matrixElementId, elementBoundId, BoundType::START, bsUID));
+	InsertAxisElement(axis, currAxisLevel, currPosInBound + 1, AxisAccessor(matrixElementId, elementBoundId, BoundType::END, beUID));
 
 	std::cout << "currentAxisLevel: " << currAxisLevel << " boundend: " << boundEnd << "bound selected: " << usedBound << std::endl;
+
+	//MapParentChildBounds(prevAxisAccessEnd, curraxisAccessEnd);
 
 	if (cutBound)
 		MapBounds(axis, usedBound, boundEnd, matrixElementId);
@@ -227,8 +232,12 @@ MatrixElement* SpaceMatrix::ReturnElement(AxisAccessor accessor) {
 	return &matrixElements[accessor.matrixElementId];
 }
 
+MatrixElementBounds* SpaceMatrix::ReturnBound(AxisAccessor accessor) {
+	return &matrixElements[accessor.matrixElementId].matrixBounds[accessor.boundId];
+}
+
 float SpaceMatrix::ReturnBoundValue(AxisAccessor accessor) {
-	return matrixElements[accessor.matrixElementId].matrixBounds[accessor.boundId][accessor.boundType];
+	return (*ReturnBound(accessor))[accessor.boundType].boundPoint;
 }
 
 float SpaceMatrix::ReturnNextBoundValue(int axis, AxisAccessor* accessor, int acceptedBound) {
@@ -236,7 +245,7 @@ float SpaceMatrix::ReturnNextBoundValue(int axis, AxisAccessor* accessor, int ac
 		return std::numeric_limits<float>::max();
 
 	MatrixElement* prevElement = ReturnElement(*accessor);
-	return prevElement->matrixBounds[accessor->boundId][accessor->boundType];
+	return prevElement->matrixBounds[accessor->boundId][accessor->boundType].boundPoint;
 }
 
 int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
@@ -255,6 +264,27 @@ int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
 		}
 
 	return min;
+}
+
+void SpaceMatrix::MapParentChildBounds(AxisAccessor* parentBound, AxisAccessor* currentBound) {
+
+	if (currentBound == nullptr)
+		return;
+
+	MatrixElementBounds* currB = ReturnBound(*currentBound);
+
+	if (parentBound != nullptr) {
+
+		MatrixElementBounds* parentB = ReturnBound(*parentBound);
+
+		if (parentB != nullptr) {
+			parentB->child = std::make_pair(currentBound->matrixElementId, currentBound->boundId);
+			currB->parent = std::make_pair(parentBound->matrixElementId, parentBound->boundId);
+			return;
+		}
+	}
+
+	currB->parent = std::make_pair(-1, -1);
 }
 
 /*int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axis) {
@@ -368,7 +398,7 @@ void SpaceMatrix::SanitiseValue(int* value, int min, int max) {
 		*value = max;
 }
 
-AxisAccessor::AxisAccessor(int mId, int bId, int bT) {
+AxisAccessor::AxisAccessor(int mId, int bId, int bT, int gId) : VectorHelpers::VectorBase(gId) {
 	matrixElementId = mId;
 	boundId = bId;
 	boundType = bT;

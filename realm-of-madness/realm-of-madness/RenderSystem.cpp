@@ -150,20 +150,21 @@ void RenderSystem::BeginLoop() {
 
 	//::MessageBox(0, L"Thread split off.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	renderThread = std::thread(&RenderSystem::Render, this);
-	std::vector<VectorHelpers::VectorBase> v;
+	/*std::vector<VectorHelpers::VectorBase> v;
 
 	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
 	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
 	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
 	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
-	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test1")));
+	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test1")));
 	v.push_back(VectorHelpers::VectorBase(IDGenerator::instance->GenerateIdForGroup("test")));
 
 	VectorHelpers::VectorBase vectorBase = v[4];
 	
 	//v.push_back(tV);	
 	VectorHelpers::RemoveVectorElement(&v, &v[3]);
-	VectorHelpers::GetVectorPosition(&v,&vectorBase);
+	VectorHelpers::GetVectorPosition(&v,&vectorBase);*/
 	
 	/*std::vector<int> v;
 
@@ -181,14 +182,14 @@ void RenderSystem::BeginLoop() {
 
 	//std::cout << "currNumber: " << *tV << std::endl;
 
-	/*SpaceMatrix test;
+	SpaceMatrix test;
 	test.CreateNewMatrixElement(Vector2(5, 2), Vector2(6, 2));
 	test.CreateNewMatrixElement(Vector2(10, 3), Vector2(8, 2));
 	test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
 	test.CreateNewMatrixElement(Vector2(6, 1), Vector2(6, 2));
 	test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
 	test.GenerateMatrix(0);
-	test.GenerateMatrix(1);*/
+	test.GenerateMatrix(1);
 	//test.SetMatrixElementLocation(2, Vector2(3, 3));
 	//test.SetMatrixElementLocation(2, Vector2(0, 0));
 	//RenderSetUp();

@@ -46,7 +46,7 @@ private:
 	float ReturnNextBoundValue(int,AxisAccessor*, int);
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
 	void PopulateAxisMatrix(int,int);
-	void MapParentChildBounds(AxisAccessor*, AxisAccessor*);
+	void MapParentChildBounds(AxisAccessor*, AxisAccessor);
 
 
 	//int BinarySearch(int, int, float, int);

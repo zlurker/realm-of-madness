@@ -156,12 +156,16 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 	int beUID = IDGenerator::instance->GenerateIdForGroup("AxisMatrix");
 	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(currAxisLevel, boundStart, usedBound, bsUID, beUID));
 
-	InsertAxisElement(axis, currAxisLevel, currPosInBound, AxisAccessor(matrixElementId, elementBoundId, BoundType::START, bsUID));
-	InsertAxisElement(axis, currAxisLevel, currPosInBound + 1, AxisAccessor(matrixElementId, elementBoundId, BoundType::END, beUID));
+	AxisAccessor start, end;
+	start = AxisAccessor(matrixElementId, elementBoundId, BoundType::START, bsUID);
+	end = AxisAccessor(matrixElementId, elementBoundId, BoundType::END, beUID);
+
+	InsertAxisElement(axis, currAxisLevel, currPosInBound, start);
+	InsertAxisElement(axis, currAxisLevel, currPosInBound + 1, end);
 
 	std::cout << "currentAxisLevel: " << currAxisLevel << " boundend: " << boundEnd << "bound selected: " << usedBound << std::endl;
 
-	//MapParentChildBounds(prevAxisAccessEnd, curraxisAccessEnd);
+	MapParentChildBounds(prevAxisAccessEnd, start);
 
 	if (cutBound)
 		MapBounds(axis, usedBound, boundEnd, matrixElementId);
@@ -233,7 +237,7 @@ MatrixElement* SpaceMatrix::ReturnElement(AxisAccessor accessor) {
 }
 
 MatrixElementBounds* SpaceMatrix::ReturnBound(AxisAccessor accessor) {
-	return &matrixElements[accessor.matrixElementId].matrixBounds[accessor.boundId];
+	return &(ReturnElement(accessor)->matrixBounds[accessor.boundId]);
 }
 
 float SpaceMatrix::ReturnBoundValue(AxisAccessor accessor) {
@@ -266,19 +270,16 @@ int* SpaceMatrix::GetElementsInRange(Vector2 startRange, Vector2 endRange) {
 	return min;
 }
 
-void SpaceMatrix::MapParentChildBounds(AxisAccessor* parentBound, AxisAccessor* currentBound) {
+void SpaceMatrix::MapParentChildBounds(AxisAccessor* parentBound, AxisAccessor currentBound) {
 
-	if (currentBound == nullptr)
-		return;
-
-	MatrixElementBounds* currB = ReturnBound(*currentBound);
+	MatrixElementBounds* currB = ReturnBound(currentBound);
 
 	if (parentBound != nullptr) {
 
 		MatrixElementBounds* parentB = ReturnBound(*parentBound);
 
 		if (parentB != nullptr) {
-			parentB->child = std::make_pair(currentBound->matrixElementId, currentBound->boundId);
+			parentB->child = std::make_pair(currentBound.matrixElementId, currentBound.boundId);
 			currB->parent = std::make_pair(parentBound->matrixElementId, parentBound->boundId);
 			return;
 		}

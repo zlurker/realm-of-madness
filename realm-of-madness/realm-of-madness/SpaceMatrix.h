@@ -48,6 +48,7 @@ private:
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
 	void PopulateAxisMatrix(int,int);
 	void MapParentChildBounds(AxisAccessor*, AxisAccessor);
+	std::pair<AxisAccessor, AxisAccessor> CreateAxisAccessorForElement(int,int,int,int,int);
 
 
 	//int BinarySearch(int, int, float, int);

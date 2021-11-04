@@ -22,6 +22,7 @@ namespace VectorHelpers {
 			std::rotate(vector->rend() - from - 1, vector->rend() - from, vector->rend() - to);
 	}
 
+	// To add a new binary search function
 	inline int GetVectorPosition(std::vector<VectorBase>* vector, VectorBase* item) {
 		auto it = std::find(vector->begin(), vector->end(), *item);
 

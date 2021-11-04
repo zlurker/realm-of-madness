@@ -4,15 +4,18 @@ ElementPoint::ElementPoint() {
 	//axisPos = -1;
 }
 
-BoundData::BoundData(float bP, int bI) {
-	boundPoint = bP;
+BoundData::BoundData(float bP) {
+	boundPoint = bP;	
+}
+
+void BoundData::SetIdentifier(int bI) {
 	boundIdentifier = bI;
 }
 
-MatrixElementBounds::MatrixElementBounds(int mL, float bPS, float bPE, int bIS, int bIE) {
+MatrixElementBounds::MatrixElementBounds(int mL, float bPS, float bPE) {
 	boundData = new BoundData[2]{
-		BoundData(bPS, bIS),
-		BoundData(bPE,bIE)
+		BoundData(bPS),
+		BoundData(bPE)
 	};
 
 	matrixLayer = mL;

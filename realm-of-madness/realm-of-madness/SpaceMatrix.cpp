@@ -169,24 +169,30 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 	std::cout << "prev bound: " << boundEndPrev << " curr bound: " << boundEndCurr << "boundEnd: " << boundEnd << std::endl;
 
 	int elementBoundId = matrixElements[matrixElementId].matrixBounds.size();
+	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(currAxisLevel, boundStart, usedBound));
+	std::pair<AxisAccessor, AxisAccessor> createdAccessors = CreateAxisAccessorForElement(axis, currAxisLevel, matrixElementId, elementBoundId, currPosInBound);
+	std::cout << "currentAxisLevel: " << currAxisLevel << " boundend: " << boundEnd << "bound selected: " << usedBound << std::endl;
 
+	MapParentChildBounds(prevAxisAccessEnd, createdAccessors.first);
+
+	if (cutBound)
+		MapBounds(axis, usedBound, boundEnd, matrixElementId);
+}
+
+std::pair<AxisAccessor, AxisAccessor> SpaceMatrix::CreateAxisAccessorForElement(int axis, int currAxisLevel, int matrixElementId, int elementBoundId, int insertionIndex) {
 	int bsUID = IDGenerator::instance->GenerateIdForGroup("AxisMatrix");
 	int beUID = IDGenerator::instance->GenerateIdForGroup("AxisMatrix");
-	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(currAxisLevel, boundStart, usedBound, bsUID, beUID));
 
+	matrixElements[matrixElementId].matrixBounds[elementBoundId].boundData[0].SetIdentifier(bsUID);
+	matrixElements[matrixElementId].matrixBounds[elementBoundId].boundData[1].SetIdentifier(beUID);
+	
 	AxisAccessor start, end;
 	start = AxisAccessor(matrixElementId, elementBoundId, BoundType::START, bsUID);
 	end = AxisAccessor(matrixElementId, elementBoundId, BoundType::END, beUID);
 
-	InsertAxisElement(axis, currAxisLevel, currPosInBound, start);
-	InsertAxisElement(axis, currAxisLevel, currPosInBound + 1, end);
-
-	std::cout << "currentAxisLevel: " << currAxisLevel << " boundend: " << boundEnd << "bound selected: " << usedBound << std::endl;
-
-	MapParentChildBounds(prevAxisAccessEnd, start);
-
-	if (cutBound)
-		MapBounds(axis, usedBound, boundEnd, matrixElementId);
+	InsertAxisElement(axis, currAxisLevel, insertionIndex, start);
+	InsertAxisElement(axis, currAxisLevel, insertionIndex + 1, end);
+	return std::make_pair(start, end);
 }
 
 int SpaceMatrix::BinarySearchAxisMatrix(int axis, int matrixLevel, int rangeStart, int rangeEnd, float value) {

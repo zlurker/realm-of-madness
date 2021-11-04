@@ -20,7 +20,8 @@ public:
 
 class BoundData {
 public:
-	BoundData(float, int);
+	BoundData(float);
+	void SetIdentifier(int);
 
 	float boundPoint;
 	int boundIdentifier;
@@ -28,7 +29,7 @@ public:
 
 class MatrixElementBounds {
 public:
-	MatrixElementBounds(int,float, float,int , int);
+	MatrixElementBounds(int,float, float);
 	~MatrixElementBounds();
 
 	BoundData operator[](int);

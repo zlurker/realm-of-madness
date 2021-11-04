@@ -47,26 +47,8 @@ void MatrixElement::SetMatrixPosition(Vector2 c) {
 }
 
 void MatrixElement::SetElementId(int id) {
-	elementId = id;
 }
 
-template<class T>
-void MatrixElement::BoundsChildOperation(int boundId, void (T::* f)(int, int)) {
-	MatrixElementBounds* bounds = &matrixBounds[boundId];
-
-	for (int i = bounds->child.size() - 1; i > -1; i--) {
-
-		// Only performs on valid linked child
-		if (bounds->child[i].use_count() > 1) {
-			MatrixElementBounds* bound = bounds->child[i].get();
-			(*f)(elementId,i);
-		}
-
-		// Removes any invalid linked child
-		else
-			bounds->child.erase(bounds->child.begin() + i);
-	}
-}
 
 
 /*int* MatrixElement::GetAxisPosition(int axis) {

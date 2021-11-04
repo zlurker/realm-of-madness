@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include <vector>
 #include <memory>
+#include <iostream>
 
 enum PointType { XMIN, XMAX, YMIN, YMAX };
 enum BoundType { START, END };
@@ -52,7 +53,24 @@ public:
 	void SetElementId(int id);
 
 	template<class T>
-	void BoundsChildOperation(int,void (T::*)(int,int));
+	void BoundsChildOperation(int boundId, T* instance, void (T::*f)(int, int)) {
+		MatrixElementBounds* bounds = &matrixBounds[boundId];
+
+		for (int i = bounds->child.size() - 1; i > -1; i--) {
+
+			// Only performs on valid linked child
+			if (bounds->child[i].use_count() > 1) {
+				std::pair<int, int> child = *bounds->child[i].get();
+				//MatrixElementBounds* bound = bounds->child[i].get();
+				//std::cout << "eid: " << elementId << std::endl;
+				(instance->*f)(child.first, child.second);
+			}
+
+			// Removes any invalid linked child
+			else
+				bounds->child.erase(bounds->child.begin() + i);
+		}
+	};
 
 	Vector2 coordinates;
 	Vector2 boundDetails;
@@ -60,7 +78,7 @@ public:
 
 	std::vector<MatrixElementBounds> matrixBounds;
 
-private:
-	int elementId;
+//private:
+	//int elementId;
 };
 

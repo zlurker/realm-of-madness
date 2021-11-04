@@ -18,12 +18,20 @@ int SpaceMatrix::CreateNewMatrixElement(Vector2 coord, Vector2 bounds)
 }
 
 void SpaceMatrix::SetMatrixElementLocation(int id, Vector2 coord) {
-	matrixElements[id].matrixBounds.clear();
+	for (int i = matrixElements[id].matrixBounds.size()-1; i > -1 ; i--) {
+		RemoveBounds(&matrixElements[id].matrixBounds[i]);
+		matrixElements[id].matrixBounds.erase(matrixElements[id].matrixBounds.begin() + i);
+	}
 
+	CreateAxisMatrixBounds(id);
 	//matrixElements[id].SetMatrixPosition(coord);
 	//CreateAxisMatrixBounds(id);
 }
 
+void SpaceMatrix::RemoveBounds(MatrixElementBounds* targetBound) {
+
+	targetBound->ChildOperation(&SpaceMatrix::RemoveBounds);
+}
 
 
 /*void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
@@ -147,6 +155,7 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 	} while (currPosInBound > 0 && curraxisAccessFront != nullptr && curraxisAccessFront->boundType == BoundType::START);
 
 	float boundEndPrev, boundEndCurr, usedBound;
+
 	// Checks to see the ending of the current collided end in previous matrix layer.
 	boundEndPrev = ReturnNextBoundValue(axis, prevAxisAccessEnd, BoundType::END);
 	// Checks to see the next collided end in current matrix layer.
@@ -288,10 +297,9 @@ void SpaceMatrix::MapParentChildBounds(AxisAccessor* parentBound, AxisAccessor c
 		MatrixElementBounds* parentB = ReturnBound(*parentBound);
 
 		if (parentB != nullptr) {
-			std::shared_ptr<MatrixElementBounds**> parentLink= std::make_shared<MatrixElementBounds**>(&currB);
 
-			currB->parentLink = parentLink;
-			parentB->child.push_back(parentLink);
+			currB->parentLink = std::make_shared<MatrixElementBounds*>(currB);
+			parentB->child.push_back(currB->parentLink);
 			currB->parent = parentB;
 			return;
 		}

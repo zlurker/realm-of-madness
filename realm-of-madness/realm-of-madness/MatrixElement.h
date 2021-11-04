@@ -31,13 +31,16 @@ public:
 	~MatrixElementBounds();
 
 	BoundData operator[](int);
+
+	template<class T>
+	void ChildOperation(void (T::*f)(MatrixElementBounds*));
 	int matrixLayer;
 	BoundData* boundData;
 
-	std::shared_ptr<MatrixElementBounds**> parentLink;
+	std::shared_ptr<MatrixElementBounds*> parentLink;
 
 	MatrixElementBounds* parent;
-	std::vector<std::shared_ptr<MatrixElementBounds**>> child;
+	std::vector<std::shared_ptr<MatrixElementBounds*>> child;
 };
 
 

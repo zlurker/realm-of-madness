@@ -27,6 +27,21 @@ BoundData MatrixElementBounds::operator[](int index) {
 	return boundData[index];
 }
 
+template<class T>
+void MatrixElementBounds::ChildOperation(void (T::*f)(MatrixElementBounds*)) {
+	for (int i = child.size() - 1; i > -1; i--) {
+
+		// Only performs on valid linked child
+		if (child[i].use_count() > 1) {
+			(*f)(*child[i].get());
+		}
+
+		// Removes any invalid linked child
+		else
+			child.erase(child.begin() + i);
+	}
+}
+
 MatrixElement::MatrixElement(Vector2 c, Vector2 bD) {
 	//xAxisPos = -1;
 	//yAxisPos = -1;

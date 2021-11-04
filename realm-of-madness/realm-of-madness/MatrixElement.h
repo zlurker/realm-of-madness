@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include "HelperFunctions.h"
 
 enum PointType { XMIN, XMAX, YMIN, YMAX };
 enum BoundType { START, END };
@@ -18,24 +19,26 @@ public:
 };
 
 
-class BoundData {
+class BoundData: public VectorHelpers::VectorBase {
 public:
 	BoundData(float);
 	void SetIdentifier(int);
 
-	float boundPoint;
-	int boundIdentifier;
+	int boundPoint;
 };
 
 class MatrixElementBounds {
 public:
-	MatrixElementBounds(int,float, float);
+	MatrixElementBounds(int,int,float, float);
 	~MatrixElementBounds();
 
 	BoundData operator[](int);
-
+	void SetMatrixLayer(int);
+	// To be replaced with a macro
+	void SanitiseChildVector();
 	
 	int matrixLayer;
+	int axis;
 	BoundData* boundData;
 
 	std::shared_ptr<std::pair<int,int>> parentLink;
@@ -52,6 +55,7 @@ public:
 	//int* GetAxisPosition(int);
 	void SetMatrixPosition(Vector2 c);
 	void SetElementId(int id);
+	
 
 	template<class T>
 	void BoundsChildOperation(int boundId, T* instance, void (T::*f)(int, int)) {

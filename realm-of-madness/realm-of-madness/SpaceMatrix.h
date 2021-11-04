@@ -9,10 +9,10 @@
 
 enum MatrixLayerType { UP, CONTINUE, DOWN };
 
-class AxisAccessor: public VectorHelpers::VectorBase {
+class AxisAccessor : public VectorHelpers::VectorBase {
 public:
 	AxisAccessor();
-	AxisAccessor(int, int,int,int);
+	AxisAccessor(int, int, int, int);
 
 	int matrixElementId;
 	int boundId;
@@ -37,24 +37,25 @@ public:
 	void GenerateMatrix(int);
 
 private:
-	void RemoveBounds(int, int);
-	void MapBounds(int,float,float,int);
+	void ShiftBoundsUp(int, int, int, int, int);
+	bool Comparision(AxisAccessor accessor);
+	void MapBounds(int, float, float, int);
 	int BinarySearchAxisMatrix(int, int, int, int, float);
 	AxisAccessor* ReturnAxisAccessor(int, int, int);
 	MatrixElement* ReturnElement(AxisAccessor);
 	MatrixElementBounds* ReturnBound(AxisAccessor accessor);
 	float ReturnBoundValue(AxisAccessor);
-	float ReturnNextBoundValue(int,AxisAccessor*, int);
+	float ReturnNextBoundValue(int, AxisAccessor*, int);
 	int DetermineAxisMatrixBinaryRange(int, int, int, float);
-	void PopulateAxisMatrix(int,int);
+	void PopulateAxisMatrix(int, int);
 	void MapParentChildBounds(AxisAccessor*, AxisAccessor);
-	std::pair<AxisAccessor, AxisAccessor> CreateAxisAccessorForElement(int,int,int,int,int);
+	std::pair<AxisAccessor, AxisAccessor> CreateAxisAccessorForElement(int, int, int, int, int);
 
 
 	//int BinarySearch(int, int, float, int);
 	//int DetermineBinaryRange(int, float, int);
-	int MoveAxisElement(int, int,int, int);
-	int InsertAxisElement(int,int, int, AxisAccessor);
+	int MoveAxisElement(int, int, int, int);
+	int InsertAxisElement(int, int, int, AxisAccessor);
 	void SanitiseValue(int*, int, int);
 	std::vector<AxisAccessor>* ReturnAxis(int);
 };

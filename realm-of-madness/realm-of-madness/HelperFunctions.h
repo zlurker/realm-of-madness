@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <functional>
 
 namespace VectorHelpers {
 
@@ -22,9 +23,10 @@ namespace VectorHelpers {
 			std::rotate(vector->rend() - from - 1, vector->rend() - from, vector->rend() - to);
 	}
 
-	// To add a new binary search function
-	inline int GetVectorPosition(std::vector<VectorBase>* vector, VectorBase* item) {
-		auto it = std::find(vector->begin(), vector->end(), *item);
+	// To add a new binary search function. & captures everything by reference (?)
+	template<class T, typename Func>
+	inline int GetVectorPosition(std::vector<T>* vector, Func&& f) {
+		auto it = std::find_if(vector->begin(), vector->end(), f);
 
 		if (it != vector->end())
 		{
@@ -32,12 +34,13 @@ namespace VectorHelpers {
 			std::cout << index << std::endl;
 			return index;
 		}
-		
+
 		return -1;
 	}
 
-	inline void RemoveVectorElement(std::vector<VectorBase>* vector, VectorBase* item) {		
-		int index = GetVectorPosition(vector,item);
+	template<class T>
+	inline void RemoveVectorElement(std::vector<T>* vector,T* instance, bool(*f)(T)) {
+		int index = GetVectorPosition(vector,instance, f);
 		vector->erase(vector->begin() + index);
 	}
 }

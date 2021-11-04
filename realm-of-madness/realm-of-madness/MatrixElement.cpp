@@ -9,16 +9,17 @@ BoundData::BoundData(float bP) {
 }
 
 void BoundData::SetIdentifier(int bI) {
-	boundIdentifier = bI;
+	baseId = bI;
 }
 
-MatrixElementBounds::MatrixElementBounds(int mL, float bPS, float bPE) {
+MatrixElementBounds::MatrixElementBounds(int a,int mL, float bPS, float bPE) {
 	boundData = new BoundData[2]{
 		BoundData(bPS),
 		BoundData(bPE)
 	};
 
-	matrixLayer = mL;
+	axis = a;
+	matrixLayer = mL;	
 	parent = std::make_pair(-1, -1);
 }
 
@@ -26,8 +27,20 @@ MatrixElementBounds::~MatrixElementBounds() {
 	parentLink.reset();
 }
 
+void MatrixElementBounds::SetMatrixLayer(int layer) {
+	matrixLayer = layer;
+}
+
 BoundData MatrixElementBounds::operator[](int index) {
 	return boundData[index];
+}
+
+void MatrixElementBounds::SanitiseChildVector() {
+	for (int i = child.size() - 1; i > -1; i--) 
+
+		// Removes invalid linked child
+		if (!(child[i].use_count() > 1)) 
+			child.erase(child.begin() + i);	
 }
 
 

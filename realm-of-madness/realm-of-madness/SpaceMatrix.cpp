@@ -18,19 +18,21 @@ int SpaceMatrix::CreateNewMatrixElement(Vector2 coord, Vector2 bounds)
 }
 
 void SpaceMatrix::SetMatrixElementLocation(int id, Vector2 coord) {
-	for (int i = matrixElements[id].matrixBounds.size()-1; i > -1 ; i--) {
-		RemoveBounds(&matrixElements[id].matrixBounds[i]);
-		matrixElements[id].matrixBounds.erase(matrixElements[id].matrixBounds.begin() + i);
-	}
+	matrixElements[id].matrixBounds.clear();
+	//for (int i = matrixElements[id].matrixBounds.size()-1; i > -1 ; i--) {
+		//RemoveBounds(&matrixElements[id].matrixBounds[i]);
+		//matrixElements[id].matrixBounds.erase(matrixElements[id].matrixBounds.begin() + i);
+	//}
 
-	CreateAxisMatrixBounds(id);
+	//CreateAxisMatrixBounds(id);
 	//matrixElements[id].SetMatrixPosition(coord);
 	//CreateAxisMatrixBounds(id);
 }
 
-void SpaceMatrix::RemoveBounds(MatrixElementBounds* targetBound) {
+void SpaceMatrix::RemoveBounds(int elementId, int boundId) {
 
-	targetBound->ChildOperation(&SpaceMatrix::RemoveBounds);
+	//matrixElements[elementId].BoundsChildOperation(boundId, &SpaceMatrix::RemoveBounds);
+	//targetBound->ChildOperation(&SpaceMatrix::RemoveBounds);
 }
 
 
@@ -298,14 +300,14 @@ void SpaceMatrix::MapParentChildBounds(AxisAccessor* parentBound, AxisAccessor c
 
 		if (parentB != nullptr) {
 
-			currB->parentLink = std::make_shared<MatrixElementBounds*>(currB);
+			currB->parentLink = std::make_shared<std::pair<int,int>>(std::make_pair(currentBound.matrixElementId,currentBound.boundId));
 			parentB->child.push_back(currB->parentLink);
-			currB->parent = parentB;
+			currB->parent = std::make_pair(parentBound->matrixElementId, parentBound->boundId);
 			return;
 		}
 	}
 
-	currB->parent = nullptr;
+	currB->parent = std::make_pair(-1,-1);
 }
 
 /*int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axis) {

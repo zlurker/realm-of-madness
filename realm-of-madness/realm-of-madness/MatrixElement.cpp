@@ -16,7 +16,7 @@ MatrixElementBounds::MatrixElementBounds(int mL, float bPS, float bPE, int bIS, 
 	};
 
 	matrixLayer = mL;
-	parent = nullptr;
+	parent = std::make_pair(-1, -1);
 }
 
 MatrixElementBounds::~MatrixElementBounds() {
@@ -27,20 +27,7 @@ BoundData MatrixElementBounds::operator[](int index) {
 	return boundData[index];
 }
 
-template<class T>
-void MatrixElementBounds::ChildOperation(void (T::*f)(MatrixElementBounds*)) {
-	for (int i = child.size() - 1; i > -1; i--) {
 
-		// Only performs on valid linked child
-		if (child[i].use_count() > 1) {
-			(*f)(*child[i].get());
-		}
-
-		// Removes any invalid linked child
-		else
-			child.erase(child.begin() + i);
-	}
-}
 
 MatrixElement::MatrixElement(Vector2 c, Vector2 bD) {
 	//xAxisPos = -1;
@@ -60,10 +47,26 @@ void MatrixElement::SetMatrixPosition(Vector2 c) {
 }
 
 void MatrixElement::SetElementId(int id) {
-	for (int i = 0; i < 4; i++)
-		points[i].elementId = id;
+	elementId = id;
 }
 
+template<class T>
+void MatrixElement::BoundsChildOperation(int boundId, void (T::* f)(int, int)) {
+	MatrixElementBounds* bounds = &matrixBounds[boundId];
+
+	for (int i = bounds->child.size() - 1; i > -1; i--) {
+
+		// Only performs on valid linked child
+		if (bounds->child[i].use_count() > 1) {
+			MatrixElementBounds* bound = bounds->child[i].get();
+			(*f)(elementId,i);
+		}
+
+		// Removes any invalid linked child
+		else
+			bounds->child.erase(bounds->child.begin() + i);
+	}
+}
 
 
 /*int* MatrixElement::GetAxisPosition(int axis) {

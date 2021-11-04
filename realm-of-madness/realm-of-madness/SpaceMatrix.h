@@ -37,7 +37,7 @@ public:
 	void GenerateMatrix(int);
 
 private:
-	void RemoveBounds(MatrixElementBounds*);
+	void RemoveBounds(int, int);
 	void MapBounds(int,float,float,int);
 	int BinarySearchAxisMatrix(int, int, int, int, float);
 	AxisAccessor* ReturnAxisAccessor(int, int, int);

@@ -13,7 +13,7 @@ public:
 	// Need to find alternative for this.
 	//int axisPos;
 	float pointPosition;
-	int elementId;
+	
 };
 
 
@@ -32,15 +32,14 @@ public:
 
 	BoundData operator[](int);
 
-	template<class T>
-	void ChildOperation(void (T::*f)(MatrixElementBounds*));
+	
 	int matrixLayer;
 	BoundData* boundData;
 
-	std::shared_ptr<MatrixElementBounds*> parentLink;
+	std::shared_ptr<std::pair<int,int>> parentLink;
 
-	MatrixElementBounds* parent;
-	std::vector<std::shared_ptr<MatrixElementBounds*>> child;
+	std::pair<int, int> parent;
+	std::vector<std::shared_ptr<std::pair<int, int>>> child;
 };
 
 
@@ -52,10 +51,16 @@ public:
 	void SetMatrixPosition(Vector2 c);
 	void SetElementId(int id);
 
+	template<class T>
+	void BoundsChildOperation(int,void (T::*)(int,int));
+
 	Vector2 coordinates;
 	Vector2 boundDetails;
 	ElementPoint* points;
 
 	std::vector<MatrixElementBounds> matrixBounds;
+
+private:
+	int elementId;
 };
 

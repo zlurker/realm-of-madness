@@ -15,11 +15,11 @@ public:
 	// Need to find alternative for this.
 	//int axisPos;
 	float pointPosition;
-	
+
 };
 
 
-class BoundData: public VectorHelpers::VectorBase {
+class BoundData : public VectorHelpers::VectorBase {
 public:
 	BoundData(float);
 	void SetIdentifier(int);
@@ -29,23 +29,33 @@ public:
 
 class MatrixElementBounds {
 public:
-	MatrixElementBounds(int,int,float, float);
+	MatrixElementBounds(int, int, float, float);
 	~MatrixElementBounds();
 
 	BoundData operator[](int);
 	void SetMatrixLayer(int);
 	// To be replaced with a macro
 	void SanitiseChildVector();
-	
+
 	int matrixLayer;
 	int axis;
 	BoundData* boundData;
 
-	std::shared_ptr<std::pair<int,int>> parentLink;
+	std::shared_ptr<std::pair<int, int>> parentLink;
 
 	std::pair<int, int> parent;
 	std::vector<std::shared_ptr<std::pair<int, int>>> child;
 };
+
+#define CHILD_LOOP_START(childVec) \
+for (int i= childVec.size() -1; i >= 0; i--){ \
+	if ((childVec[i].use_count() <= 1)){ \
+	childVec.erase(childVec.begin() + i); \
+	} else { \
+
+#define CHILD_LOOP_END() \
+	} \
+} \
 
 
 
@@ -55,10 +65,10 @@ public:
 	//int* GetAxisPosition(int);
 	void SetMatrixPosition(Vector2 c);
 	void SetElementId(int id);
-	
+
 
 	template<class T>
-	void BoundsChildOperation(int boundId, T* instance, void (T::*f)(int, int)) {
+	void BoundsChildOperation(int boundId, T* instance, void (T::* f)(int, int)) {
 		MatrixElementBounds* bounds = &matrixBounds[boundId];
 
 		for (int i = bounds->child.size() - 1; i > -1; i--) {
@@ -83,7 +93,7 @@ public:
 
 	std::vector<MatrixElementBounds> matrixBounds;
 
-//private:
-	//int elementId;
+	//private:
+		//int elementId;
 };
 

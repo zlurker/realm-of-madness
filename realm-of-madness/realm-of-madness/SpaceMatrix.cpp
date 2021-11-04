@@ -28,28 +28,25 @@ void SpaceMatrix::SetMatrixElementLocation(int id, Vector2 coord) {
 	CreateAxisMatrixBounds(id);
 }
 
-
-
-void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis ,int matrixLayer =-1,int insertionPoint=-1) {
+void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer = -1, int insertionPoint = -1) {
 	MatrixElementBounds targetBound = matrixElements[elementId].matrixBounds[boundId];
 
 	int isPt = VectorHelpers::GetVectorPosition(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
 
+	///VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
+	//VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[1].baseId; });
+
 	if (matrixLayer > -1) {
 		targetBound.SetMatrixLayer(matrixLayer);
 
-		if (insertionPoint > -1) {
-			VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; })
-			VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[1].baseId; })
-		}
+		if (insertionPoint > -1)
+			CreateAxisAccessorForElement(targetAxis, matrixLayer, elementId, boundId, insertionPoint);
 	}
 
-	targetBound.SanitiseChildVector();//BoundsChildOperation(boundId, this, &SpaceMatrix::RemoveBounds);
-
-	for (int i = targetBound.child.size()-1; i >=0 ; i--) {
-		std::pair<int, int> child = *targetBound.child[i];
-		ShiftBoundsUp(child.first, child.second, targetAxis, targetBound.matrixLayer, isPt);
-	}
+	CHILD_LOOP_START(targetBound.child)
+	std::pair<int, int> child = *targetBound.child[i];
+	ShiftBoundsUp(child.first, child.second, targetAxis, targetBound.matrixLayer, isPt);
+	CHILD_LOOP_END()
 }
 
 bool SpaceMatrix::Comparision(AxisAccessor accessor) {
@@ -192,7 +189,7 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 	std::cout << "prev bound: " << boundEndPrev << " curr bound: " << boundEndCurr << "boundEnd: " << boundEnd << std::endl;
 
 	int elementBoundId = matrixElements[matrixElementId].matrixBounds.size();
-	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(axis,currAxisLevel, boundStart, usedBound));
+	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(axis, currAxisLevel, boundStart, usedBound));
 	std::pair<AxisAccessor, AxisAccessor> createdAccessors = CreateAxisAccessorForElement(axis, currAxisLevel, matrixElementId, elementBoundId, currPosInBound);
 	std::cout << "currentAxisLevel: " << currAxisLevel << " boundend: " << boundEnd << "bound selected: " << usedBound << std::endl;
 
@@ -208,7 +205,7 @@ std::pair<AxisAccessor, AxisAccessor> SpaceMatrix::CreateAxisAccessorForElement(
 
 	matrixElements[matrixElementId].matrixBounds[elementBoundId].boundData[0].SetIdentifier(bsUID);
 	matrixElements[matrixElementId].matrixBounds[elementBoundId].boundData[1].SetIdentifier(beUID);
-	
+
 	AxisAccessor start, end;
 	start = AxisAccessor(matrixElementId, elementBoundId, BoundType::START, bsUID);
 	end = AxisAccessor(matrixElementId, elementBoundId, BoundType::END, beUID);

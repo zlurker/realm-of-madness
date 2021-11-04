@@ -47,13 +47,14 @@ public:
 	std::vector<std::shared_ptr<std::pair<int, int>>> child;
 };
 
-#define CHILD_LOOP_START(childVec) \
-for (int i= childVec.size() -1; i >= 0; i--){ \
-	if ((childVec[i].use_count() <= 1)){ \
-	childVec.erase(childVec.begin() + i); \
+// look for a way to type safe the param
+#define SHARED_PTR_LOOP_START(sharedPtrVec) \
+for (int i= sharedPtrVec.size() -1; i >= 0; i--){ \
+	if ((sharedPtrVec[i].use_count() <= 1)){ \
+	sharedPtrVec.erase(sharedPtrVec.begin() + i); \
 	} else { \
 
-#define CHILD_LOOP_END() \
+#define SHARED_PTR_LOOP_END() \
 	} \
 } \
 

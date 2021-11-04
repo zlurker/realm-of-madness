@@ -23,17 +23,16 @@ void SpaceMatrix::SetMatrixElementLocation(int id, Vector2 coord) {
 		matrixElements[id].matrixBounds.erase(matrixElements[id].matrixBounds.begin() + i);
 	}
 
-	//CreateAxisMatrixBounds(id);
 	matrixElements[id].SetMatrixPosition(coord);
-	CreateAxisMatrixBounds(id);
+	//CreateAxisMatrixBounds(id);
 }
 
-void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer = -1, int insertionPoint = -1) {
+void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer, int insertionPoint) {
 	MatrixElementBounds targetBound = matrixElements[elementId].matrixBounds[boundId];
 
-	int isPt = VectorHelpers::GetVectorPosition(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
+	int isPt = 0;//VectorHelpers::GetVectorPosition(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
 
-	///VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
+	//VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
 	//VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[1].baseId; });
 
 	if (matrixLayer > -1) {
@@ -43,15 +42,12 @@ void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int 
 			CreateAxisAccessorForElement(targetAxis, matrixLayer, elementId, boundId, insertionPoint);
 	}
 
-	CHILD_LOOP_START(targetBound.child)
-	std::pair<int, int> child = *targetBound.child[i];
-	ShiftBoundsUp(child.first, child.second, targetAxis, targetBound.matrixLayer, isPt);
-	CHILD_LOOP_END()
+	SHARED_PTR_LOOP_START(targetBound.child)
+		std::pair<int, int> child = *targetBound.child[i];
+	ShiftBoundsUp(child.first, child.second, targetAxis);//, targetBound.matrixLayer, isPt);
+	SHARED_PTR_LOOP_END()
 }
 
-bool SpaceMatrix::Comparision(AxisAccessor accessor) {
-
-}
 
 
 /*void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {

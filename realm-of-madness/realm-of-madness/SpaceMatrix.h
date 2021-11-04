@@ -37,7 +37,7 @@ public:
 	void GenerateMatrix(int);
 
 private:
-	void ShiftBoundsUp(int, int, int, int, int);
+	void ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer = -1, int insertionPoint = -1);
 	bool Comparision(AxisAccessor accessor);
 	void MapBounds(int, float, float, int);
 	int BinarySearchAxisMatrix(int, int, int, int, float);

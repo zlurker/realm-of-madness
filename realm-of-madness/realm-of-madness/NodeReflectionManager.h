@@ -38,5 +38,4 @@ private:
 #define REFLECTION_END() \
 		}; \
 	} \
-
-static NodeData* nodeData = new NodeData(identifier, BuildReflectionData);
+	static NodeData* nodeData = new NodeData(identifier,BuildReflectionData);

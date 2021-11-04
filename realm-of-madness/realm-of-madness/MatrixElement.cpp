@@ -19,6 +19,10 @@ MatrixElementBounds::MatrixElementBounds(int mL, float bPS, float bPE, int bIS, 
 	parent = nullptr;
 }
 
+MatrixElementBounds::~MatrixElementBounds() {
+	parentLink.reset();
+}
+
 BoundData MatrixElementBounds::operator[](int index) {
 	return boundData[index];
 }

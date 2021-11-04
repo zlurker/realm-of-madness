@@ -17,6 +17,15 @@ int SpaceMatrix::CreateNewMatrixElement(Vector2 coord, Vector2 bounds)
 	return id;
 }
 
+void SpaceMatrix::SetMatrixElementLocation(int id, Vector2 coord) {
+	matrixElements[id].matrixBounds.clear();
+
+	//matrixElements[id].SetMatrixPosition(coord);
+	//CreateAxisMatrixBounds(id);
+}
+
+
+
 /*void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 	MatrixElement* matrixEle = &(matrixElements[elementId]);
 

@@ -31,7 +31,7 @@ public:
 
 	SpaceMatrix();
 	int CreateNewMatrixElement(Vector2, Vector2);
-	//void SetMatrixElementLocation(int, Vector2);
+	void SetMatrixElementLocation(int, Vector2);
 	int* GetElementsInRange(Vector2, Vector2);
 	void CreateAxisMatrixBounds(int);
 	void GenerateMatrix(int);

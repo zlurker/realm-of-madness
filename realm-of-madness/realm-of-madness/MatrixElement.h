@@ -28,6 +28,8 @@ public:
 class MatrixElementBounds {
 public:
 	MatrixElementBounds(int,float, float,int , int);
+	~MatrixElementBounds();
+
 	BoundData operator[](int);
 	int matrixLayer;
 	BoundData* boundData;

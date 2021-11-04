@@ -1,4 +1,5 @@
-﻿  RenderSystem.cpp
+﻿  MatrixElement.cpp
+  RenderSystem.cpp
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(30,14): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(256,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(257,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
@@ -11,8 +12,8 @@ D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(261,
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(262,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(266,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(267,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(354,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(372,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(357,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(375,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   realm-of-madness.cpp
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(30,14): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\ConsoleRedirect.h(15,44): warning C4311: 'type cast': pointer truncation from 'HANDLE' to 'long'

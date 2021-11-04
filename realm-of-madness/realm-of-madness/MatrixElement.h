@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2.h"
 #include <vector>
+#include <memory>
 
 enum PointType { XMIN, XMAX, YMIN, YMAX };
 enum BoundType { START, END };
@@ -31,8 +32,10 @@ public:
 	int matrixLayer;
 	BoundData* boundData;
 
-	std::pair<int, int> parent;
-	std::pair<int, int> child;
+	std::shared_ptr<MatrixElementBounds**> parentLink;
+
+	MatrixElementBounds* parent;
+	std::vector<std::shared_ptr<MatrixElementBounds**>> child;
 };
 
 

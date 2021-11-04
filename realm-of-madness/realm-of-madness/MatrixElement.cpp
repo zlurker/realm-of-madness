@@ -16,8 +16,7 @@ MatrixElementBounds::MatrixElementBounds(int mL, float bPS, float bPE, int bIS, 
 	};
 
 	matrixLayer = mL;
-	parent = std::make_pair(-1, -1);
-	child = std::make_pair(-1, -1);
+	parent = nullptr;
 }
 
 BoundData MatrixElementBounds::operator[](int index) {

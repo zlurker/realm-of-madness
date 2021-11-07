@@ -10,7 +10,7 @@ namespace VectorHelpers {
 		VectorBase();
 		VectorBase(int);
 		VectorBase* GetAddress();
-		bool operator==(const VectorBase&);
+		bool operator==(const int&);
 		int baseId;
 	};
 
@@ -24,9 +24,9 @@ namespace VectorHelpers {
 	}
 
 	// To add a new binary search function. & captures everything by reference (?)
-	template<class T, typename Func>
-	inline int GetVectorPosition(std::vector<T>* vector, Func&& f) {
-		auto it = std::find_if(vector->begin(), vector->end(), f);
+	template<class T1,class T2>
+	inline int GetVectorPosition(std::vector<T1>* vector, T2 item) {
+		auto it = std::find(vector->begin(), vector->end(), item);
 
 		if (it != vector->end())
 		{
@@ -38,9 +38,9 @@ namespace VectorHelpers {
 		return -1;
 	}
 
-	template<class T>
-	inline void RemoveVectorElement(std::vector<T>* vector,T* instance, bool(*f)(T)) {
-		int index = GetVectorPosition(vector,instance, f);
+	template<class T1,class T2>
+	inline void RemoveVectorElement(std::vector<T1>* vector,T2 item) {
+		int index = GetVectorPosition(vector,item);
 		vector->erase(vector->begin() + index);
 	}
 }

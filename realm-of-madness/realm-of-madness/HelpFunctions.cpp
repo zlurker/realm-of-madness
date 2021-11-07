@@ -15,7 +15,7 @@ namespace VectorHelpers {
 		return this;
 	}
 
-	bool VectorBase::operator==(const VectorBase& value){
-		return value.baseId == baseId;
+	bool VectorBase::operator==(const int& value){
+		return value == baseId;
 	}
 }

@@ -30,10 +30,12 @@ void SpaceMatrix::SetMatrixElementLocation(int id, Vector2 coord) {
 void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer, int insertionPoint) {
 	MatrixElementBounds targetBound = matrixElements[elementId].matrixBounds[boundId];
 
-	int isPt = 0;//VectorHelpers::GetVectorPosition(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
-
-	//VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[0].baseId; });
-	//VectorHelpers::RemoveVectorElement(axisMatrix[targetAxis][targetBound.matrixLayer], [&](int c) { return c == targetBound.boundData[1].baseId; });
+	int mLyer = targetBound.matrixLayer;
+	int insPt = VectorHelpers::GetVectorPosition(&axisMatrix[targetAxis][targetBound.matrixLayer], targetBound.boundData[0].baseId);
+	
+	VectorHelpers::RemoveVectorElement(&axisMatrix[targetAxis][targetBound.matrixLayer], targetBound.boundData[0].baseId);
+	VectorHelpers::RemoveVectorElement(&axisMatrix[targetAxis][targetBound.matrixLayer], targetBound.boundData[1].baseId);
+	//VectorHelpers::RemoveVectorElement()
 
 	if (matrixLayer > -1) {
 		targetBound.SetMatrixLayer(matrixLayer);
@@ -44,7 +46,7 @@ void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int 
 
 	SHARED_PTR_LOOP_START(targetBound.child)
 		std::pair<int, int> child = *targetBound.child[i];
-	ShiftBoundsUp(child.first, child.second, targetAxis);//, targetBound.matrixLayer, isPt);
+	ShiftBoundsUp(child.first, child.second, targetAxis, mLyer,insPt);//, targetBound.matrixLayer, isPt);
 	SHARED_PTR_LOOP_END()
 }
 
@@ -441,12 +443,17 @@ void SpaceMatrix::SanitiseValue(int* value, int min, int max) {
 		*value = max;
 }
 
-AxisAccessor::AxisAccessor(int mId, int bId, int bT, int gId) : VectorHelpers::VectorBase(gId) {
+AxisAccessor::AxisAccessor(int mId, int bId, int bT, int gId) {
 	matrixElementId = mId;
 	boundId = bId;
 	boundType = bT;
+	uniqueId = gId;
 }
 
 AxisAccessor::AxisAccessor() {
 
+}
+
+bool AxisAccessor::operator==(const int& value) {
+	return value == uniqueId;
 }

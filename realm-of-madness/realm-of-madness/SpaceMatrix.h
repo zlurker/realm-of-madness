@@ -9,14 +9,17 @@
 
 enum MatrixLayerType { UP, CONTINUE, DOWN };
 
-class AxisAccessor : public VectorHelpers::VectorBase {
+class AxisAccessor {
 public:
 	AxisAccessor();
 	AxisAccessor(int, int, int, int);
 
+	bool operator==(const int&);
+
 	int matrixElementId;
 	int boundId;
 	int boundType;
+	int uniqueId;
 };
 
 class SpaceMatrix

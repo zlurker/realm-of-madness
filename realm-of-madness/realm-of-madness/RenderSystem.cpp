@@ -195,11 +195,12 @@ void RenderSystem::BeginLoop() {
 	int d1 = test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
 	int d2 = test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
 
+	test.GenerateMatrix(0);
 	std::cout << "pre-removal: " << test.matrixElements[d2].matrixBounds[0].parentLink.use_count() << std::endl;
-	test.SetMatrixElementLocation(d1, Vector2());
+	test.SetMatrixElementLocation(d1, Vector2(30,1));
 	std::cout << "post-removal: " << test.matrixElements[d2].matrixBounds[0].parentLink.use_count() << std::endl;
 
-	//test.GenerateMatrix(0);
+	test.GenerateMatrix(0);
 	//test.GenerateMatrix(1);
 	//test.SetMatrixElementLocation(2, Vector2(3, 3));
 	//test.SetMatrixElementLocation(2, Vector2(0, 0));

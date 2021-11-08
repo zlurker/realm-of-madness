@@ -24,7 +24,7 @@ void SpaceMatrix::SetMatrixElementLocation(int id, Vector2 coord) {
 	}
 
 	matrixElements[id].SetMatrixPosition(coord);
-	//CreateAxisMatrixBounds(id);
+	CreateAxisMatrixBounds(id);
 }
 
 void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer, int insertionPoint) {

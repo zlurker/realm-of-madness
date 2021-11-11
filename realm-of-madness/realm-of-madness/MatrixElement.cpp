@@ -5,21 +5,22 @@ ElementPoint::ElementPoint() {
 }
 
 BoundData::BoundData(float bP) {
-	boundPoint = bP;	
+	boundPoint = bP;
 }
 
 void BoundData::SetIdentifier(int bI) {
+	std::cout << "changed from " << baseId << " to " << bI << std::endl;
 	baseId = bI;
 }
 
-MatrixElementBounds::MatrixElementBounds(int a,int mL, float bPS, float bPE) {
+MatrixElementBounds::MatrixElementBounds(int a, int mL, float bPS, float bPE) {
 	boundData = new BoundData[2]{
 		BoundData(bPS),
 		BoundData(bPE)
 	};
 
 	axis = a;
-	matrixLayer = mL;	
+	matrixLayer = mL;
 	parent = std::make_pair(-1, -1);
 }
 
@@ -28,6 +29,7 @@ MatrixElementBounds::~MatrixElementBounds() {
 }
 
 void MatrixElementBounds::SetMatrixLayer(int layer) {
+	std::cout << boundData[0].baseId << " " << boundData[1].baseId << " set to " << layer << std::endl;
 	matrixLayer = layer;
 }
 
@@ -36,11 +38,11 @@ BoundData MatrixElementBounds::operator[](int index) {
 }
 
 void MatrixElementBounds::SanitiseChildVector() {
-	for (int i = child.size() - 1; i > -1; i--) 
+	for (int i = child.size() - 1; i > -1; i--)
 
 		// Removes invalid linked child
-		if (!(child[i].use_count() > 1)) 
-			child.erase(child.begin() + i);	
+		if (!(child[i].use_count() > 1))
+			child.erase(child.begin() + i);
 }
 
 

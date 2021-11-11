@@ -192,8 +192,9 @@ void RenderSystem::BeginLoop() {
 	test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));*/
 
 	// Child disassocaition test
-	int d1 = test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
-	int d2 = test.CreateNewMatrixElement(Vector2(15, 1), Vector2(30, 2));
+	int d1 = test.CreateNewMatrixElement(Vector2(15, 3), Vector2(30, 4));
+	int d2 = test.CreateNewMatrixElement(Vector2(15, 13), Vector2(30, 4));
+	int d3 = test.CreateNewMatrixElement(Vector2(20, 23), Vector2(30, 4));
 
 	test.GenerateMatrix(0);
 	std::cout << "pre-removal: " << test.matrixElements[d2].matrixBounds[0].parentLink.use_count() << std::endl;
@@ -201,6 +202,8 @@ void RenderSystem::BeginLoop() {
 	std::cout << "post-removal: " << test.matrixElements[d2].matrixBounds[0].parentLink.use_count() << std::endl;
 
 	test.GenerateMatrix(0);
+	test.SetMatrixElementLocation(d3, Vector2(30, 23));
+	//test.GenerateMatrix(0);
 	//test.GenerateMatrix(1);
 	//test.SetMatrixElementLocation(2, Vector2(3, 3));
 	//test.SetMatrixElementLocation(2, Vector2(0, 0));

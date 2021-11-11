@@ -24,7 +24,7 @@ namespace VectorHelpers {
 	}
 
 	// To add a new binary search function. & captures everything by reference (?)
-	template<class T1,class T2>
+	template<class T1, class T2>
 	inline int GetVectorPosition(std::vector<T1>* vector, T2 item) {
 		auto it = std::find(vector->begin(), vector->end(), item);
 
@@ -38,9 +38,9 @@ namespace VectorHelpers {
 		return -1;
 	}
 
-	template<class T1,class T2>
-	inline void RemoveVectorElement(std::vector<T1>* vector,T2 item) {
-		int index = GetVectorPosition(vector,item);
+	template<class T1, class T2>
+	inline void RemoveVectorElement(std::vector<T1>* vector, T2 item) {
+		int index = GetVectorPosition(vector, item);
 		vector->erase(vector->begin() + index);
 	}
 }

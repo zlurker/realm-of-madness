@@ -1,22 +1,22 @@
 ﻿  SpaceMatrix.cpp
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(14,32): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(21,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(71,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(184,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(214,74): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(314,53): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(322,74): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(331,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(332,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(336,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(337,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(426,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(444,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(69,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(182,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(212,74): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(312,53): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(320,74): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(329,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(330,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(334,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(335,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(424,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(442,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(33,14): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(43): message : see reference to function template instantiation 'int VectorHelpers::GetVectorPosition<AxisAccessor,int>(std::vector<AxisAccessor,std::allocator<AxisAccessor>> *,T2)' being compiled
           with
           [
               T2=int
           ]
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(340): warning C4172: returning address of local variable or temporary: min
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(338): warning C4172: returning address of local variable or temporary: min
   realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\x64\Debug\realm-of-madness.exe

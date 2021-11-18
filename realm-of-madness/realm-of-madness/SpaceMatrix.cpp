@@ -42,29 +42,27 @@ void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int 
 	int mLyer = targetBound->matrixLayer;
 	int insPt = VectorHelpers::GetVectorPosition(&axisMatrix[targetAxis][targetBound->matrixLayer], targetBound->boundData[0].baseId);
 
-	std::cout << "before vector: " << targetBound->boundData[0].baseId << " " << targetBound->boundData[1].baseId << " " << targetBound->matrixLayer << std::endl;
+	//std::cout << "before vector: " << targetBound->boundData[0].baseId << " " << targetBound->boundData[1].baseId << " " << targetBound->matrixLayer << std::endl;
 
-	for (int i = 0; i < axisMatrix[targetAxis].size(); i++) {
-		for (int j = 0; j < axisMatrix[targetAxis][i].size(); j++)
-			std::cout << axisMatrix[targetAxis][i][j].uniqueId << " ";
-
-		std::cout << std::endl;
-	}
+	//for (int i = 0; i < axisMatrix[targetAxis].size(); i++) {
+		//for (int j = 0; j < axisMatrix[targetAxis][i].size(); j++)
+			//std::cout << axisMatrix[targetAxis][i][j].uniqueId << " ";
+		//std::cout << std::endl;
+	//}
 
 	VectorHelpers::RemoveVectorElement(&axisMatrix[targetAxis][targetBound->matrixLayer], targetBound->boundData[0].baseId);
 	VectorHelpers::RemoveVectorElement(&axisMatrix[targetAxis][targetBound->matrixLayer], targetBound->boundData[1].baseId);
 	//VectorHelpers::RemoveVectorElement()
-	std::cout << "after vector" << std::endl;
+	//std::cout << "after vector" << std::endl;
 	if (matrixLayer > -1) {
 		std::cout << targetBound->boundData[0].baseId << " " << targetBound->boundData[1].baseId << " " << targetBound->matrixLayer << " setting to: " << matrixLayer << std::endl;
 		targetBound->SetMatrixLayer(matrixLayer);
+		//std::cout << "desired set: " << matrixLayer << " actual Value: " << matrixElements[elementId].matrixBounds[boundId].matrixLayer << std::endl;
 
-		std::cout << "desired set: " << matrixLayer << " actual Value: " << matrixElements[elementId].matrixBounds[boundId].matrixLayer << std::endl;
-
-		if (insertionPoint > -1) {
-			std::cout << "1. created bounds with " << matrixLayer << std::endl;
+		if (insertionPoint > -1) //{
+			//std::cout << "1. created bounds with " << matrixLayer << std::endl;
 			CreateAxisAccessorForElement(targetAxis, matrixLayer, elementId, boundId, insertionPoint);
-		}
+		//}
 	}
 
 

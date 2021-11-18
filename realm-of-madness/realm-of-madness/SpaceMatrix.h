@@ -22,6 +22,17 @@ public:
 	int uniqueId;
 };
 
+class AxisAccessorPlacement {
+public:
+	AxisAccessorPlacement();
+
+	int axis;
+	int matrixLayer;
+	int position;
+
+
+};
+
 class SpaceMatrix
 {
 public:

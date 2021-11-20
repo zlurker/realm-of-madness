@@ -16,6 +16,8 @@ class MatrixSpaceMerger
 {
 public:
 	MatrixSpaceMerger();
+
+	void InsertMergeSection(std::pair<int, int>, std::pair<int, int>,int,int);
 	
 	std::vector<AxisAccessorPair> boundsPair;
 	std::map<int, int> boundsLookup;

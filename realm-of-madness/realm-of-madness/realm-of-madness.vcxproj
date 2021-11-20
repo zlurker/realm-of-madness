@@ -148,6 +148,7 @@
     <ClInclude Include="IDraggable.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MatrixElement.h" />
+    <ClInclude Include="MatrixSpaceMerger.h" />
     <ClInclude Include="NodeClassTest.h" />
     <ClInclude Include="NodeReflectionManager.h" />
     <ClInclude Include="realm-of-madness.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="ISingleton.cpp" />
     <ClCompile Include="MatrixElement.cpp" />
+    <ClCompile Include="MatrixSpaceMerger.cpp" />
     <ClCompile Include="NodeClassTest.cpp" />
     <ClCompile Include="NodeData.cpp" />
     <ClCompile Include="NodeReflectionManager.cpp" />

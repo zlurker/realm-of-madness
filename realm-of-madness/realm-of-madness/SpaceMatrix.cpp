@@ -73,8 +73,6 @@ void SpaceMatrix::ShiftBoundsUp(int elementId, int boundId, int targetAxis, int 
 	SHARED_PTR_LOOP_END()
 }
 
-
-
 /*void SpaceMatrix::SetMatrixElementLocation(int elementId, Vector2 newCoords) {
 	MatrixElement* matrixEle = &(matrixElements[elementId]);
 
@@ -211,7 +209,7 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 
 	int elementBoundId = matrixElements[matrixElementId].matrixBounds.size();
 	matrixElements[matrixElementId].matrixBounds.push_back(MatrixElementBounds(axis, currAxisLevel, boundStart, usedBound));
-	std::cout << "2. created bounds with " << currAxisLevel << std::endl;
+	//std::cout << "2. created bounds with " << currAxisLevel << std::endl;
 	std::pair<AxisAccessor, AxisAccessor> createdAccessors = CreateAxisAccessorForElement(axis, currAxisLevel, matrixElementId, elementBoundId, currPosInBound);
 	//std::cout << "currentAxisLevel: " << currAxisLevel << " boundend: " << boundEnd << "bound selected: " << usedBound << std::endl;
 

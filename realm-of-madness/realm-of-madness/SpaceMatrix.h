@@ -3,6 +3,7 @@
 #include "MatrixElement.h"
 #include "HelperFunctions.h"
 #include "IDGenerator.h"
+#include "MatrixSpaceMerger.h"
 #include <iostream>
 #include <limits>
 #include <tuple>
@@ -42,6 +43,8 @@ public:
 	std::vector<std::vector<AxisAccessor>>* axisMatrix;
 
 	std::vector<MatrixElement> matrixElements;
+
+	MatrixSpaceMerger matrixMerger;
 
 	SpaceMatrix();
 	int CreateNewMatrixElement(Vector2, Vector2);

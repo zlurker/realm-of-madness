@@ -213,6 +213,10 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 	std::pair<AxisAccessor, AxisAccessor> createdAccessors = CreateAxisAccessorForElement(axis, currAxisLevel, matrixElementId, elementBoundId, currPosInBound);
 	//std::cout << "currentAxisLevel: " << currAxisLevel << " boundend: " << boundEnd << "bound selected: " << usedBound << std::endl;
 
+	MergeBound(currPosInBound, BoundCollisionType::DIFFERENT, axis, currAxisLevel);
+	MergeBound(currPosInBound + 1, BoundCollisionType::DIFFERENT, axis, currAxisLevel);
+
+
 	MapParentChildBounds(prevAxisAccessEnd, createdAccessors.first);
 
 	if (cutBound)
@@ -355,6 +359,40 @@ void SpaceMatrix::MapParentChildBounds(AxisAccessor* parentBound, AxisAccessor c
 
 	currB->parent = std::make_pair(-1, -1);
 }
+
+void SpaceMatrix::MergeBound(int axisAccessorId, BoundCollisionType collisionType, int axis, int matrix) {
+	AxisAccessor accessor = axisMatrix[axis][matrix][axisAccessorId];
+	int neighbourId;
+
+	switch (accessor.boundType) {
+	case BoundType::START: {
+		neighbourId = axisAccessorId - 1;
+	}break;
+	case BoundType::END: {
+		neighbourId = axisAccessorId + 1;
+	}break;
+	}
+
+	if (CheckCollisionType(axisAccessorId, neighbourId, axis, matrix) == collisionType)
+		matrixMerger.InsertMergeSection(axisAccessorId, neighbourId, axis, matrix);
+}
+
+BoundCollisionType SpaceMatrix::CheckCollisionType(int bound1, int bound2, int axis, int matrix) {
+	AxisAccessor accessor1, accessor2;
+	accessor1 = axisMatrix[axis][matrix][bound1];
+	accessor2 = axisMatrix[axis][matrix][bound2];
+
+	if (ReturnBoundValue(accessor1) != ReturnBoundValue(accessor2))
+		return BoundCollisionType::NONE;
+
+	if (accessor1.matrixElementId == accessor2.matrixElementId)
+		return BoundCollisionType::SAME;
+
+	return BoundCollisionType::DIFFERENT;
+}
+
+
+
 
 /*int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axis) {
 	//int difference = (rangeEnd - rangeStart) / 2;

@@ -9,6 +9,7 @@
 #include <tuple>
 
 enum MatrixLayerType { UP, CONTINUE, DOWN };
+enum BoundCollisionType { DIFFERENT, SAME, NONE };
 
 class AxisAccessor {
 public:
@@ -30,8 +31,6 @@ public:
 	int axis;
 	int matrixLayer;
 	int position;
-
-
 };
 
 class SpaceMatrix
@@ -55,7 +54,7 @@ public:
 
 private:
 	void ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer = -1, int insertionPoint = -1);
-	bool Comparision(AxisAccessor accessor);
+	//bool Comparision(AxisAccessor accessor);
 	void MapBounds(int, float, float, int);
 	int BinarySearchAxisMatrix(int, int, int, int, float);
 	AxisAccessor* ReturnAxisAccessor(int, int, int);
@@ -68,12 +67,16 @@ private:
 	void MapParentChildBounds(AxisAccessor*, AxisAccessor);
 	std::pair<AxisAccessor, AxisAccessor> CreateAxisAccessorForElement(int, int, int, int, int);
 
-
 	//int BinarySearch(int, int, float, int);
 	//int DetermineBinaryRange(int, float, int);
 	int MoveAxisElement(int, int, int, int);
 	int InsertAxisElement(int, int, int, AxisAccessor);
 	void SanitiseValue(int*, int, int);
 	std::vector<AxisAccessor>* ReturnAxis(int);
+	void MergeBound(int,BoundCollisionType,int,int);
+	BoundCollisionType CheckCollisionType(int,int,int,int);
+	//int GetAdjacentNeighbourId(int);
+
+	MatrixSpaceMerger groupBoundsMerger;
 };
 

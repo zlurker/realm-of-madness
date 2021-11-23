@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include <vector>
 #include "MatrixElement.h"
 #include "HelperFunctions.h"
@@ -8,13 +9,13 @@
 #include <limits>
 #include <tuple>
 
-enum MatrixLayerType { UP, CONTINUE, DOWN };
-enum BoundCollisionType { DIFFERENT, SAME, NONE };
+enum class MatrixLayerType { UP, CONTINUE, DOWN };
+enum class BoundCollisionType { DIFFERENT, SAME, NONE };
 
 class AxisAccessor {
 public:
 	AxisAccessor();
-	AxisAccessor(int, int, int, int);
+	AxisAccessor(int, int, BoundType, int);
 
 	bool operator==(const int&);
 
@@ -23,6 +24,22 @@ public:
 	int boundType;
 	int uniqueId;
 };
+
+class MatrixSpaceMarker {
+public:
+	MatrixSpaceMarker(float);
+
+	AxisAccessor end;
+	AxisAccessor start;
+
+	AxisAccessor GetAxisAccessor(BoundType);
+	void SetAxisAccessor(BoundType, int, int);
+	float ReturnMarkerPosition();
+
+private:
+	float markerPos;
+};
+
 
 class AxisAccessorPlacement {
 public:
@@ -39,7 +56,7 @@ public:
 	std::vector<AxisAccessor>* xAxis;
 	std::vector<AxisAccessor>* yAxis;
 
-	std::vector<std::vector<AxisAccessor>>* axisMatrix;
+	std::vector<std::vector<MatrixSpaceMarker>>* axisMatrix;
 
 	std::vector<MatrixElement> matrixElements;
 
@@ -53,6 +70,8 @@ public:
 	void GenerateMatrix(int);
 
 private:
+	MatrixSpaceMerger groupBoundsMerger;
+
 	void ShiftBoundsUp(int elementId, int boundId, int targetAxis, int matrixLayer = -1, int insertionPoint = -1);
 	//bool Comparision(AxisAccessor accessor);
 	void MapBounds(int, float, float, int);
@@ -70,13 +89,13 @@ private:
 	//int BinarySearch(int, int, float, int);
 	//int DetermineBinaryRange(int, float, int);
 	int MoveAxisElement(int, int, int, int);
-	int InsertAxisElement(int, int, int, AxisAccessor);
+	int HandleSpaceMarker(int, int, float);
 	void SanitiseValue(int*, int, int);
 	std::vector<AxisAccessor>* ReturnAxis(int);
-	void MergeBound(int,BoundCollisionType,int,int);
-	BoundCollisionType CheckCollisionType(int,int,int,int);
-	//int GetAdjacentNeighbourId(int);
+	void MergeBound(int, BoundCollisionType, int, int);
+	BoundCollisionType CheckCollisionType(int, int, int, int);
+	int GetBoundPosition(int, int, int);
 
-	MatrixSpaceMerger groupBoundsMerger;
+	
 };
 

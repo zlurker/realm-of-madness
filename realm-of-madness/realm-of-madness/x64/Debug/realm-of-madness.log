@@ -1,25 +1,23 @@
-﻿  MatrixSpaceMerger.cpp
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\MatrixSpaceMerger.cpp(56,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+﻿  MatrixElement.cpp
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\MatrixElement.cpp(8,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\MatrixElement.cpp(41,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   realm-of-madness.cpp
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\ConsoleRedirect.h(15,44): warning C4311: 'type cast': pointer truncation from 'HANDLE' to 'long'
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\ConsoleRedirect.h(15,44): warning C4302: 'type cast': truncation from 'HANDLE' to 'long'
-  RenderSystem.cpp
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(271,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(272,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
   SpaceMatrix.cpp
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(14,32): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(21,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(69,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(182,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(212,74): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(312,53): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(320,74): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(329,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(330,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(334,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(335,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(424,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(442,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(180,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(210,74): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(313,53): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(321,74): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(330,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(331,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(335,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(336,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(457,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(475,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(33,14): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(43): message : see reference to function template instantiation 'int VectorHelpers::GetVectorPosition<AxisAccessor,int>(std::vector<AxisAccessor,std::allocator<AxisAccessor>> *,T2)' being compiled
           with
@@ -27,5 +25,5 @@ D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(43):
               T2=int
           ]
   Generating Code...
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(338): warning C4172: returning address of local variable or temporary: min
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(339): warning C4172: returning address of local variable or temporary: min
   realm-of-madness.vcxproj -> D:\Repos\realm-of-madness\realm-of-madness\x64\Debug\realm-of-madness.exe

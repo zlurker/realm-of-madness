@@ -5,8 +5,8 @@
 #include <iostream>
 #include "HelperFunctions.h"
 
-enum PointType { XMIN, XMAX, YMIN, YMAX };
-enum BoundType { START, END };
+enum class PointType { XMIN, XMAX, YMIN, YMAX };
+enum class BoundType { START, END };
 
 class ElementPoint {
 public:

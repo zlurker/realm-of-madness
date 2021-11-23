@@ -58,10 +58,10 @@ MatrixElement::MatrixElement(Vector2 c, Vector2 bD) {
 void MatrixElement::SetMatrixPosition(Vector2 c) {
 	coordinates = c;
 
-	points[PointType::XMIN].pointPosition = coordinates.x - boundDetails.x;
-	points[PointType::XMAX].pointPosition = coordinates.x + boundDetails.x;
-	points[PointType::YMIN].pointPosition = coordinates.y - boundDetails.y;
-	points[PointType::YMAX].pointPosition = coordinates.y + boundDetails.y;
+	points[(int)PointType::XMIN].pointPosition = coordinates.x - boundDetails.x;
+	points[(int)PointType::XMAX].pointPosition = coordinates.x + boundDetails.x;
+	points[(int)PointType::YMIN].pointPosition = coordinates.y - boundDetails.y;
+	points[(int)PointType::YMAX].pointPosition = coordinates.y + boundDetails.y;
 }
 
 void MatrixElement::SetElementId(int id) {

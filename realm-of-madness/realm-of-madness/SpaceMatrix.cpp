@@ -1,12 +1,12 @@
 #include "SpaceMatrix.h"
 
 int pointsIndex[2][2] = {
-	{PointType::XMIN, PointType::XMAX},
-	{PointType::YMIN, PointType::YMAX}
+	{(int)PointType::XMIN, (int)PointType::XMAX},
+	{(int)PointType::YMIN, (int)PointType::YMAX}
 };
 
 SpaceMatrix::SpaceMatrix() {
-	axisMatrix = new std::vector<std::vector<AxisAccessor>>[2];
+	axisMatrix = new std::vector<std::vector<MatrixSpaceMarker>>[2];
 }
 
 int SpaceMatrix::CreateNewMatrixElement(Vector2 coord, Vector2 bounds)
@@ -191,14 +191,14 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 
 		if (prevAxisAccessEnd != nullptr)
 			std::cout << "pb ptype: " << prevAxisAccessEnd->boundType << "startingType: " << pointsIndex[axis][0] << std::endl;*/
-	} while (currPosInBound > 0 && curraxisAccessFront != nullptr && curraxisAccessFront->boundType == BoundType::START);
+	} while (currPosInBound > 0 && curraxisAccessFront != nullptr && curraxisAccessFront->boundType == (int)BoundType::START);
 
 	float boundEndPrev, boundEndCurr, usedBound;
 
 	// Checks to see the ending of the current collided end in previous matrix layer.
-	boundEndPrev = ReturnNextBoundValue(axis, prevAxisAccessEnd, BoundType::END);
+	boundEndPrev = ReturnNextBoundValue(axis, prevAxisAccessEnd, (int)BoundType::END);
 	// Checks to see the next collided end in current matrix layer.
-	boundEndCurr = ReturnNextBoundValue(axis, curraxisAccessEnd, BoundType::START);
+	boundEndCurr = ReturnNextBoundValue(axis, curraxisAccessEnd, (int)BoundType::START);
 
 	usedBound = boundEndPrev < boundEndCurr ? boundEndPrev : boundEndCurr;
 	bool cutBound = usedBound < boundEnd;
@@ -215,7 +215,6 @@ void SpaceMatrix::MapBounds(int axis, float boundStart, float boundEnd, int matr
 
 	MergeBound(currPosInBound, BoundCollisionType::DIFFERENT, axis, currAxisLevel);
 	MergeBound(currPosInBound + 1, BoundCollisionType::DIFFERENT, axis, currAxisLevel);
-
 
 	MapParentChildBounds(prevAxisAccessEnd, createdAccessors.first);
 
@@ -241,7 +240,7 @@ std::pair<AxisAccessor, AxisAccessor> SpaceMatrix::CreateAxisAccessorForElement(
 	return std::make_pair(start, end);
 }
 
-int SpaceMatrix::BinarySearchAxisMatrix(int axis, int matrixLevel, int rangeStart, int rangeEnd, float value) {
+/*int SpaceMatrix::BinarySearchAxisMatrix(int axis, int matrixLevel, int rangeStart, int rangeEnd, float value) {
 	if (axisMatrix[axis][matrixLevel].size() == 0)
 		return 0;
 
@@ -288,7 +287,7 @@ int SpaceMatrix::DetermineAxisMatrixBinaryRange(int axis, int matrixLayer, int m
 		return 0;
 	//if (matrixElements[centerPoint].coordinates[axis] > value)
 	return 1;
-}
+}*/
 
 void SpaceMatrix::PopulateAxisMatrix(int axis, int matrixLength) {
 	while (axisMatrix[axis].size() <= matrixLength)
@@ -361,10 +360,10 @@ void SpaceMatrix::MapParentChildBounds(AxisAccessor* parentBound, AxisAccessor c
 }
 
 void SpaceMatrix::MergeBound(int axisAccessorId, BoundCollisionType collisionType, int axis, int matrix) {
-	AxisAccessor accessor = axisMatrix[axis][matrix][axisAccessorId];
-	int neighbourId;
+	/*AxisAccessor accessor = axisMatrix[axis][matrix][axisAccessorId];
+	int neighbourId = -1;
 
-	switch (accessor.boundType) {
+	switch ((BoundType)accessor.boundType) {
 	case BoundType::START: {
 		neighbourId = axisAccessorId - 1;
 	}break;
@@ -373,17 +372,20 @@ void SpaceMatrix::MergeBound(int axisAccessorId, BoundCollisionType collisionTyp
 	}break;
 	}
 
-	if (CheckCollisionType(axisAccessorId, neighbourId, axis, matrix) == collisionType)
-		matrixMerger.InsertMergeSection(axisAccessorId, neighbourId, axis, matrix);
+	if (neighbourId >= 0 && neighbourId < axisMatrix[axis][matrix].size())
+		if (CheckCollisionType(axisAccessorId, neighbourId, axis, matrix) == collisionType)
+			matrixMerger.InsertMergeSection(axisAccessorId, neighbourId, axis, matrix);*/
 }
 
-BoundCollisionType SpaceMatrix::CheckCollisionType(int bound1, int bound2, int axis, int matrix) {
-	AxisAccessor accessor1, accessor2;
-	accessor1 = axisMatrix[axis][matrix][bound1];
-	accessor2 = axisMatrix[axis][matrix][bound2];
+BoundCollisionType SpaceMatrix::CheckCollisionType(int matrixMarkerId, int axis, int matrix) {
+	//AxisAccessor accessor1, accessor2;
+	//accessor1 = axisMatrix[axis][matrix][bound1];
+	//accessor2 = axisMatrix[axis][matrix][bound2];
 
-	if (ReturnBoundValue(accessor1) != ReturnBoundValue(accessor2))
-		return BoundCollisionType::NONE;
+	if (axisMatrix[axis][matrix][matrixMarkerId].start.matrixElementId)
+
+		if (ReturnBoundValue(accessor1) != ReturnBoundValue(accessor2))
+			return BoundCollisionType::NONE;
 
 	if (accessor1.matrixElementId == accessor2.matrixElementId)
 		return BoundCollisionType::SAME;
@@ -391,8 +393,9 @@ BoundCollisionType SpaceMatrix::CheckCollisionType(int bound1, int bound2, int a
 	return BoundCollisionType::DIFFERENT;
 }
 
+int GetBoundPosition(int accessorId, int axis, int matrixLayer) {
 
-
+}
 
 /*int SpaceMatrix::BinarySearch(int rangeStart, int rangeEnd, float value, int axis) {
 	//int difference = (rangeEnd - rangeStart) / 2;
@@ -453,7 +456,7 @@ BoundCollisionType SpaceMatrix::CheckCollisionType(int bound1, int bound2, int a
 	return matrixElements[accessor.matrixElementId].matrixBounds[accessor.boundId][accessor.boundType];
 */
 
-int SpaceMatrix::MoveAxisElement(int axis, int matrixLayer, int current, int next) {
+/*int SpaceMatrix::MoveAxisElement(int axis, int matrixLayer, int current, int next) {
 	std::vector<AxisAccessor>* selectedAxis = &axisMatrix[axis][matrixLayer];
 
 	if (next >= selectedAxis->size())
@@ -466,11 +469,11 @@ int SpaceMatrix::MoveAxisElement(int axis, int matrixLayer, int current, int nex
 
 	VectorHelpers::MoveVectorElement(selectedAxis, current, next);
 	return next;
-}
+}*/
 
-int SpaceMatrix::InsertAxisElement(int axis, int matrixLayer, int pos, AxisAccessor value) {
+int SpaceMatrix::HandleSpaceMarker(int axis, int matrixLayer, int pos, float value) {
 
-	std::vector<AxisAccessor>* selectedAxis = &axisMatrix[axis][matrixLayer];
+	std::vector<MatrixSpaceMarker>* selectedAxis = &axisMatrix[axis][matrixLayer];
 
 	if (pos >= selectedAxis->size()) {
 		//std::cout << "Pushing back element" << std::endl;
@@ -482,6 +485,17 @@ int SpaceMatrix::InsertAxisElement(int axis, int matrixLayer, int pos, AxisAcces
 	selectedAxis->insert(selectedAxis->begin() + pos, value);
 
 	return pos;
+}
+
+int SpaceMatrix::HandleSpaceMarker(int axis, int matrixLayer, float value) {
+	std::vector<MatrixSpaceMarker>* selectedAxis = &axisMatrix[axis][matrixLayer];
+	int id =VectorHelpers::BinarySearch(selectedAxis, 0, selectedAxis->size(), value, &MatrixSpaceMarker::ReturnMarkerPosition);
+	int previousId = id - 1;
+
+	if ((*selectedAxis)[previousId].ReturnMarkerPosition() == value)
+		return previousId;
+
+
 }
 
 std::vector<AxisAccessor>* SpaceMatrix::ReturnAxis(int axis) {
@@ -505,10 +519,10 @@ void SpaceMatrix::SanitiseValue(int* value, int min, int max) {
 		*value = max;
 }
 
-AxisAccessor::AxisAccessor(int mId, int bId, int bT, int gId) {
+AxisAccessor::AxisAccessor(int mId, int bId, BoundType bT, int gId) {
 	matrixElementId = mId;
 	boundId = bId;
-	boundType = bT;
+	boundType = (int)bT;
 	uniqueId = gId;
 }
 
@@ -518,4 +532,46 @@ AxisAccessor::AxisAccessor() {
 
 bool AxisAccessor::operator==(const int& value) {
 	return value == uniqueId;
+}
+
+MatrixSpaceMarker::MatrixSpaceMarker(float pos) {
+	markerPos = pos;
+}
+
+AxisAccessor MatrixSpaceMarker::GetAxisAccessor(BoundType boundType) {
+	AxisAccessor accessor;
+
+	switch (boundType) {
+	case BoundType::START: {
+		accessor = start;
+	}break;
+	case BoundType::END: {
+		accessor = end;
+	}break;
+	}
+
+	return accessor;
+}
+
+void MatrixSpaceMarker::SetAxisAccessor(BoundType boundType, int elementId, int boundId) {
+	AxisAccessor* modifyAccessor = nullptr;
+
+	switch (boundType) {
+	case BoundType::START: {
+		modifyAccessor = &start;
+	}break;
+	case BoundType::END: {
+		modifyAccessor = &end;
+	}break;
+	default: {
+		return;
+	}
+	}
+
+	modifyAccessor->matrixElementId = elementId;
+	modifyAccessor->boundId = boundId;
+}
+
+float MatrixSpaceMarker::ReturnMarkerPosition() {
+	return markerPos;
 }

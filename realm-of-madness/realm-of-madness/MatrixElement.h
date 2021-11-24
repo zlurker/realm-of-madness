@@ -24,7 +24,7 @@ public:
 	BoundData(float);
 	void SetIdentifier(int);
 
-	int boundPoint;
+	float boundPoint;
 };
 
 class MatrixElementBounds {

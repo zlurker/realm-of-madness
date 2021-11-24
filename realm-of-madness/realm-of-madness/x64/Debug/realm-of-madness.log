@@ -1,6 +1,21 @@
-﻿  SpaceMatrix.cpp
+﻿  realm-of-madness.cpp
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\ConsoleRedirect.h(15,44): warning C4311: 'type cast': pointer truncation from 'HANDLE' to 'long'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\ConsoleRedirect.h(15,44): warning C4302: 'type cast': truncation from 'HANDLE' to 'long'
+  RenderSystem.cpp
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(271,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\RenderSystem.cpp(272,38): warning C4244: '=': conversion from 'GLdouble' to 'float', possible loss of data
+  SpaceMatrix.cpp
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(14,32): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(21,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(43,29): error C2039: 'GetVectorPosition': is not a member of 'VectorHelpers'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(6): message : see declaration of 'VectorHelpers'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(43,46): error C3861: 'GetVectorPosition': identifier not found
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(53,17): error C2039: 'RemoveVectorElement': is not a member of 'VectorHelpers'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(6): message : see declaration of 'VectorHelpers'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(53,36): error C3861: 'RemoveVectorElement': identifier not found
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(54,17): error C2039: 'RemoveVectorElement': is not a member of 'VectorHelpers'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(6): message : see declaration of 'VectorHelpers'
+D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(54,36): error C3861: 'RemoveVectorElement': identifier not found
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(70,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(191,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(232,74): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
@@ -10,11 +25,5 @@ D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(394,
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(395,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(549,125): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(570,34): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(33,14): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(43): message : see reference to function template instantiation 'int VectorHelpers::GetVectorPosition<MatrixSpaceMarker,int>(std::vector<MatrixSpaceMarker,std::allocator<MatrixSpaceMarker>> *,T2)' being compiled
-          with
-          [
-              T2=int
-          ]
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\HelperFunctions.h(67,81): error C2064: term does not evaluate to a function taking 0 arguments
-D:\Repos\realm-of-madness\realm-of-madness\realm-of-madness\SpaceMatrix.cpp(549): message : see reference to function template instantiation 'int VectorHelpers::BinarySearch<MatrixSpaceMarker>(std::vector<MatrixSpaceMarker,std::allocator<MatrixSpaceMarker>> *,int,int,float,float (__cdecl MatrixSpaceMarker::* )(void))' being compiled
+  HelpFunctions.cpp
+  Generating Code...

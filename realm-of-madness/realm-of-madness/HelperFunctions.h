@@ -24,7 +24,7 @@ namespace VectorHelpers {
 	}
 
 	// To add a new binary search function. & captures everything by reference (?)
-	template<class T1, class T2>
+	/*template<class T1, class T2>
 	inline int GetVectorPosition(std::vector<T1>* vector, T2 item) {
 		auto it = std::find(vector->begin(), vector->end(), item);
 
@@ -36,7 +36,7 @@ namespace VectorHelpers {
 		}
 
 		return -1;
-	}
+	}*/
 
 	inline int DetermineBinaryRange(float vectorValue, float value) {
 		//AxisAccessor* accessor = ReturnAxisAccessor(axis, matrixLayer, matrixLayerElementId);
@@ -62,9 +62,7 @@ namespace VectorHelpers {
 		int axisCenterPoint = (rangeStart + rangeEnd) / 2;
 		int processedCenterPoint = axisCenterPoint;
 
-		//std::cout << "Before" << std::endl;
-
-		int binaryRangeResult = DetermineBinaryRange((*vector)[processedCenterPoint].*valueF(), value);
+		int binaryRangeResult = DetermineBinaryRange(((*vector)[processedCenterPoint].*valueF)(), value);
 		int l = 0, r = 0;
 
 		//std::cout << "After" << std::endl;
@@ -85,11 +83,11 @@ namespace VectorHelpers {
 		//if (axis == 0)
 			//std::cout << "center pt: " << axisCenterPoint << " rangeR: " << binaryRangeResult << " vlen: " << axisMatrix[axis][matrixLevel].size() << std::endl;
 		return axisCenterPoint + binaryRangeResult;
-	}	
+	}
 
-	template<class T1, class T2>
+	/*template<class T1, class T2>
 	inline void RemoveVectorElement(std::vector<T1>* vector, T2 item) {
 		int index = GetVectorPosition(vector, item);
 		vector->erase(vector->begin() + index);
-	}
+	}*/
 }
